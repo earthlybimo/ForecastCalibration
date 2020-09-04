@@ -2,7 +2,6 @@
 library(ncdf4)
 library(IceCast)
 
-
 Preddir="/pf/a/a270138/Data/BiasCorrOutput/Remapped_fcst"
 Obsdir="/pf/a/a270138/Data/BiasCorrOutput/NSIDC_bootstrap_iceconc"
 save_mapping_name="/pf/a/a270138/Data/BiasCorrOutput/Mapping_2003to2012_try1"
@@ -12,7 +11,8 @@ for(y in 3:12){
   if(!file.exists(infile)){print(paste("File doesn't exist:",basename(infile)));next()}
   fl=nc_open(infile)
   ci=ncvar_get(fl,"a_ice")
-  pred_ci[y-2,,,]=ci
+  # pred_ci[y-2,,,]=ci  
+  pred_ci[y-2,,,]=apply(ci,c(2,3), rev)
   nc_close(fl)
 } 
 obs_ci=array(dim=c(10,304,448,12))
@@ -23,7 +23,8 @@ for(y in 3:12){
   if(length(infile)==0){print(paste("File doesn't exist for year",y));next()}
   fl=nc_open(infile)
   ci=ncvar_get(fl,"seaice_conc_monthly_cdr")
-  obs_ci[y-2,,,mm]=ci
+  # obs_ci[y-2,,,mm]=ci
+  obs_ci[y-2,,,mm]=t(apply(ci, 1,rev))
   nc_close(fl)
 }
 
