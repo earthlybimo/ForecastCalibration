@@ -13,7 +13,7 @@ data_path='/work/ba1138/a270112/awicm3/FCST_CLIM/'
 
 ## Which year are we targetting? And what month?
 histYrs=np.arange(2003,2011)
-
+histYrs=np.arange(2011,2015)
 targetyear=2013
 targetmonth=2  #For 4 fcsts of each year, it will be different month. For now, we are only doing Fcst 1
 
