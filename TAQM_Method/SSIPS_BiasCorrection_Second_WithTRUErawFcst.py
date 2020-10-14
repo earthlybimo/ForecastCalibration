@@ -115,7 +115,7 @@ for g in np.arange(Grdlen):
         # else, set TAOH equal to OH (i.e. don't perform the trend adjustment)
         Y_ta = np.copy(Y)
 
-    X_t=fcst_target[:,1,targetmonth-1,g]
+    # X_t=fcst_target[:,1,targetmonth-1,g] # Do we need this?
     X_ta_params, Y_ta_params, X_t_params = taqminst.fit_params(X_ta,Y_ta,X_t)
 
     trust_sharp_fcst = True
