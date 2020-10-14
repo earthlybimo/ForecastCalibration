@@ -200,7 +200,7 @@ print("Calibratting done! Now saving a file")
 
 ### the part where I try to save the calibrated forecasts:
 
-file = 'Forecast_Calibration_Yr',targetyear,'_01Mn_',targetmonth,'.nc'
+file = 'Forecast_Calibration_Yr',str(targetyear),'_01Mn_',targetmonth,'.nc'
 ncfile = Dataset(file,'w',format='NETCDF4_CLASSIC')
 #create dimensions
 ncfile.createDimension('n2d',126858)
