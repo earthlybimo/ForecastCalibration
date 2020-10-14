@@ -88,7 +88,7 @@ g=2000
 for g in np.arange(Grdlen):
     X=histFcst[:,:,g]
     Y=histObs[:,g]
-    X_t=fcst_target[:,1,targetmonth-1,g]
+    X_t=fcst_target[:,targetmonth-1,g]
     taqminst = taqm()
     tau_t=histYrs
     t=targetyear
