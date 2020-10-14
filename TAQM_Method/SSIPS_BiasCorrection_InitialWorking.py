@@ -20,8 +20,9 @@ targetmonth=2  #For 4 fcsts of each year, it will be different month. For now, w
 
 ## First let's save targetFcst
 yr=str(targetyear-2000)       # current year
-file_anom0 = Dataset(data_path+'F'+str(yr)+'_MEM_ens_mon_mean_corr.nc')
+file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+'_MEM_ens_mon_mean_corr.nc')
 fcst_target=file_anom0.variables['SIC_FCST_CORR'][:]
+file_anom0.close()
 #plt.plot(fcst_anom[1,1,1,])
 #plt.show()
 
@@ -30,8 +31,9 @@ Grdlen=Dims[3]  #roughly 126858
 EMlen=Dims[0]  #30 Ensemble Members
 
 ## Observation for the date already exists?
-file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(targetyear)+'.nc')
+file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(targetyear).zfill(2)+'.nc')
 truobs=file_osisaf.variables['obs'][targetmonth-1,:]
+file_osisaf.close()
 
 rawFcstCRPSS=np.empty(Grdlen)
 calFcstCRPSS=np.empty(Grdlen)
@@ -47,8 +49,9 @@ for year in histYrs:
     #print(year)
     yr=str(year-2000)       # current year
     lyr=str(year-1-2000)    # last year
-    file_anom = Dataset(data_path+'F'+str(yr)+'_MEM_ens_mon_mean_corr.nc')
+    file_anom = Dataset(data_path+'F'+str(yr).zfill(2)+'_MEM_ens_mon_mean_corr.nc')
     fcst_anom=file_anom.variables['SIC_FCST_CORR'][:]
+    file_anom.close()
     histFcst[c,:,:]=fcst_anom[:,1,targetmonth-1,:]
     c=c+1
 
@@ -60,8 +63,9 @@ for year in histYrs:
     #print(year)
     yr=str(year-2000)       # current year
     lyr=str(year-1-2000)    # last year
-    file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(year)+'.nc')
+    file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(year).zfill(2)+'.nc')
     obs=file_osisaf.variables['obs'][targetmonth-1,:]
+    file_osisaf.close()
     histObs[c,:]=obs
     c=c+1
 
