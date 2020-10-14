@@ -12,7 +12,7 @@ data_path='/work/ba1138/a270112/awicm3/FCST_CLIM/'
 
 
 ## Which year are we targetting? And what month?
-histYrs=np.arange(2011,2015)
+histYrs=np.arange(2003,2011)
 
 targetyear=2013
 targetmonth=2  #For 4 fcsts of each year, it will be different month. For now, we are only doing Fcst 1
@@ -74,8 +74,6 @@ histObs=np.empty((len(histYrs),Grdlen))
 
 for c,year in  enumerate(histYrs):
     #print(year)
-    yr=str(year-2000)       # current year
-    lyr=str(year-1-2000)    # last year
     file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(year)+'.nc')
     obs=file_osisaf.variables['obs'][targetmonth-1,:]
     histObs[c,:]=obs
@@ -93,7 +91,7 @@ for g in np.arange(Grdlen):
     tau_t=histYrs
     t=targetyear
 
-    # if(np.std(Y)<0.025):  #This should probably not be run the same way
+    # if(np.std(Y)<0.025):  #Maybe this should not be run the same way
         # print("Should skip this grid point. Somehow.")
         # continue
         # print("low stDev for Y")
