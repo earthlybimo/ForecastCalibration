@@ -13,7 +13,6 @@ data_path='/work/ba1138/a270112/awicm3/FCST_CLIM/'
 
 ## Which year are we targetting? And what month?
 histYrs=np.arange(2003,2011)
-histYrs=np.arange(2011,2015)
 targetyear=2013
 targetmonth=2  #For 4 fcsts of each year, it will be different month. For now, we are only doing Fcst 1
 
@@ -183,25 +182,25 @@ for g in np.arange(Grdlen):
 
     # plt.show()
 
-    Y_t=truobs[g]
+    Y_t = truobs[g]
 
-    if(Y_t>=0):  #To avoid the mask
-        obsSIP[g]=np.int(Y_t>=0.15)
-    rawSIP[g]=sip_x_t
-    calSIP[g]=sip_x_t_cal
+    if(Y_t >= 0):  # To avoid the mask
+        obsSIP[g] = np.int(Y_t >= 0.15)
+    rawSIP[g] = sip_x_t
+    calSIP[g] = sip_x_t_cal
     cdf_obs = np.zeros(len(x))
-    cdf_obs[Y_t*np.ones(len(x))<=x] = 1.0
+    cdf_obs[Y_t*np.ones(len(x)) <= x] = 1.0
 
     # CRPS for the raw forecast
-    crps_x_t = np.trapz((cdf_x_t - cdf_obs)**2.,x)
+    crps_x_t = np.trapz((cdf_x_t - cdf_obs)**2., x)
     # print (crps_x_t)
     # >>> 0.0277481871254
 
     # CRPS for the calibrated forecast
-    crps_x_t_cal = np.trapz((cdf_x_t_cal - cdf_obs)**2.,x)
+    crps_x_t_cal = np.trapz((cdf_x_t_cal - cdf_obs)**2., x)
     # print (crps_x_t_cal)
-    rawFcstCRPSS[g]=crps_x_t
-    calFcstCRPSS[g]=crps_x_t_cal
+    rawFcstCRPSS[g] = crps_x_t
+    calFcstCRPSS[g] = crps_x_t_cal
     del taqminst
 
 
@@ -211,29 +210,29 @@ print("Calibratting done! Now saving a file")
 ### the part where I try to save the calibrated forecasts:
 
 file = 'Forecast_Calibration_TrulyRaw_Yr'+str(targetyear)+'_01Mn_'+str(targetmonth).zfill(2)+'.nc'
-ncfile = Dataset(file,'w',format='NETCDF4_CLASSIC')
-#create dimensions
-ncfile.createDimension('n2d',126858)
+ncfile = Dataset(file, 'w', format='NETCDF4_CLASSIC')
+# create dimensions
+ncfile.createDimension('n2d', 126858)
 # ncfile.createDimension('fcst',4)
 # ncfile.createDimension('time',12)
 # ncfile.createDimension('ens',30)
-#define variables
-Fcst_corr_to_write = ncfile.createVariable('SIP_FCST_CORR','d',('n2d'))
-Fcst_raw_to_write = ncfile.createVariable('SIP_FCST_RAW','d',('n2d'))
-Fcst_obs_to_write = ncfile.createVariable('SIP_FCST_OBS','d',('n2d'))
+# define variables
+Fcst_corr_to_write = ncfile.createVariable('SIP_FCST_CORR', 'd', ('n2d'))
+Fcst_raw_to_write = ncfile.createVariable('SIP_FCST_RAW', 'd', ('n2d'))
+Fcst_obs_to_write = ncfile.createVariable('SIP_FCST_OBS', 'd', ('n2d'))
 
 
 # attributes
 # Fcst_corr_to_write.units = 'change in hours'
 # Fcst_corr_to_write.units = '%'
 # Fcst_corr_to_write.description = 'SIP with bias correction with 4 leadtimes from JAN to DEC for each member.'
-#populate the data
-Fcst_corr_to_write[:] =calSIP
-Fcst_raw_to_write[:] =rawSIP
-Fcst_obs_to_write[:] =obsSIP
+# populate the data
+Fcst_corr_to_write[:] = calSIP
+Fcst_raw_to_write[:] = rawSIP
+Fcst_obs_to_write[:] = obsSIP
 
 
-#close ncfile
+# close ncfile
 ncfile.close()
 
 print("DONE!!!")
