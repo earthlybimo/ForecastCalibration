@@ -15,11 +15,13 @@ data_path ='/work/ba1138/a270112/awicm3/FCST_CLIM/'
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/'
 
 # Which year are we targetting? And what month?
-histYrs=np.arange(2003,2011)
 # python filenam.py 2015 1 6
 targetyear = int(sys.argv[1])
 targetmonth = int(sys.argv[3])
 # whichinit = int(sys.argv[2])
+# histYrs=np.arange(2003,2011)
+histYrs=np.arange(2003,targetyear)  # Now let's include all years until target within hist
+
 
 # print('Targetyear= '+str(targetyear)+' and target month is'+str(targetmonth))  # Testing
 
@@ -222,7 +224,7 @@ print("Calibratting done! Now saving result file")
 
 ### the part where I try to save the calibrated forecasts:
 
-filename = save_path+'Forecast_Calibration_Yr'+str(targetyear)+'_01Mn_'+str(targetmonth).zfill(2)+'.nc'
+filename = save_path+'Forecast_Calibration_BigHist_Yr'+str(targetyear)+'_01Mn_'+str(targetmonth).zfill(2)+'.nc'
 ncfile = Dataset(filename, 'w', format='NETCDF4_CLASSIC')
 # create dimensions
 ncfile.createDimension('n2d', 126858)
