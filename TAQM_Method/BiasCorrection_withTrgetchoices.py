@@ -18,7 +18,8 @@ save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/'
 # python filenam.py 2015 1 6
 targetyear = int(sys.argv[1])
 targetmonth = int(sys.argv[3])
-# whichinit = int(sys.argv[2])
+# whichinit=1# 
+whichinit = int(sys.argv[2])
 # histYrs=np.arange(2003,2011)
 histYrs=np.arange(2003,targetyear)  # Now let's include all years until target within hist
 
@@ -35,7 +36,7 @@ fcst_target = np.empty((EMlen,12,Grdlen))
 yr=str(targetyear-2000)       # current year
 # file_anom0 = Dataset(data_path+'F'+str(yr)+'_MEM_ens_mon_mean_corr.nc')
 for EM in np.arange(EMlen):
-    file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+'1_ens_mon_mean/SIC_mon_'+str(EM+1).zfill(2)+'.nc')
+    file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+str(whichinit)+'_ens_mon_mean/SIC_mon_'+str(EM+1).zfill(2)+'.nc')
     temp=file_anom0.variables['a_ice'][:]
     fcst_target[EM,:,:]=temp
     file_anom0.close()
@@ -65,7 +66,7 @@ for c,year in  enumerate(histYrs):
     yr=str(year-2000)       # current year
     lyr=str(year-1-2000)    # last year
     for EM in np.arange(EMlen):
-        file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+'1_ens_mon_mean/SIC_mon_'+str(EM+1).zfill(2)+'.nc')
+        file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+str(whichinit)+'_ens_mon_mean/SIC_mon_'+str(EM+1).zfill(2)+'.nc')
         temp=file_anom0.variables['a_ice'][:]
         histFcst[c,EM,:]=temp[targetmonth-1,:]
         file_anom0.close()
@@ -224,7 +225,7 @@ print("Calibratting done! Now saving result file")
 
 ### the part where I try to save the calibrated forecasts:
 
-filename = save_path+'Forecast_Calibration_BigHist_Yr'+str(targetyear)+'_01Mn_'+str(targetmonth).zfill(2)+'.nc'
+filename = save_path+'Forecast_Calibration_BigHist_Yr'+str(targetyear)+'_'+str(whichinit).zfill(2)+'Mn_'+str(targetmonth).zfill(2)+'.nc'
 ncfile = Dataset(filename, 'w', format='NETCDF4_CLASSIC')
 # create dimensions
 ncfile.createDimension('n2d', 126858)
