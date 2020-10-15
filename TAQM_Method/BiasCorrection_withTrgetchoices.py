@@ -91,6 +91,9 @@ for c,year in  enumerate(histYrs):
 
 # Now the bias correction steps are run on each grid point. Let's start by trying just one, then later run a loop?
 
+
+print("Input done, now calibrating")
+
 g=2000
 for g in np.arange(Grdlen):
     X=histFcst[:,:,g]
@@ -214,13 +217,13 @@ for g in np.arange(Grdlen):
     del taqminst
 
 
-print("Calibratting done! Now saving a file")
+print("Calibratting done! Now saving result file")
 
 
 ### the part where I try to save the calibrated forecasts:
 
-file = save_path+'Forecast_Calibration_Yr'+str(targetyear)+'_01Mn_'+str(targetmonth).zfill(2)+'.nc'
-ncfile = Dataset(file, 'w', format='NETCDF4_CLASSIC')
+filename = save_path+'Forecast_Calibration_Yr'+str(targetyear)+'_01Mn_'+str(targetmonth).zfill(2)+'.nc'
+ncfile = Dataset(filename, 'w', format='NETCDF4_CLASSIC')
 # create dimensions
 ncfile.createDimension('n2d', 126858)
 # ncfile.createDimension('fcst',4)
@@ -244,5 +247,4 @@ Fcst_obs_to_write[:] = obsSIP
 
 # close ncfile
 ncfile.close()
-
-print("DONE!!!")
+print('Saved file: ' + filename)
