@@ -15,7 +15,7 @@ calSPSarr=rawSPSarr
 
 for(yy in 1:length(inYR)){
   for(init in 1:4){
-    for(mm in 1:4){
+    for(mm in 1:12){
       loadname=sprintf("%s/Forecast_Calibration_BigHist_Yr%d_%02dMn_%02d.nc",save_path,inYR[yy],init,mm)
       if(!file.exists(loadname)) next()
       
@@ -29,7 +29,7 @@ for(yy in 1:length(inYR)){
       preSPS2=preSPS*grd$cell_area
       SPSraw=sum(preSPS2)*(10^-12)
       rawSPSarr[yy,init,mm]=SPSraw
-      
+      remove(preSPS2,preSPS)
       preSPS=(calSIP-rawSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
       SPScal=sum(preSPS2)*(10^-12)
@@ -41,6 +41,9 @@ for(yy in 1:length(inYR)){
   }
 }
 
-save(file = Allsavename,version = 2,grd,calSPSarr,rawSPSarr,inYR)
+Mon_rawSPS=apply(rawSPSarr, c(2,3),mean,na.rm=T)
+Mon_calSPS=apply(calSPSarr, c(2,3),mean,na.rm=T)
+
+save(file = Allsavename,version = 2,grd,calSPSarr,rawSPSarr,inYR,Mon_rawSPS,Mon_calSPS)
 print("Done!")
 
