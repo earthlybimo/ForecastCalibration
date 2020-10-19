@@ -18,8 +18,8 @@ save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/'
 # python filenam.py 2015 1 6
 targetyear = int(sys.argv[1])
 targetmonth = int(sys.argv[3])
-# whichinit=1# 
-whichinit = int(sys.argv[2])
+# whichinit=1#
+whichinit = int(sys.argv[2])  #Must be within 1 to 4
 # histYrs=np.arange(2003,2011)
 histYrs=np.arange(2003,targetyear)  # Now let's include all years until target within hist
 
