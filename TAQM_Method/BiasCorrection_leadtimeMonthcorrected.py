@@ -22,14 +22,16 @@ leadtimeMonth = int(sys.argv[3])  #Leadtime, in month
 whichinit = int(sys.argv[2])  #Must be within 1 to 4
 # histYrs=np.arange(2003,2011)
 histYrs=np.arange(2003,targetyear)  # Now let's include all years until target within hist
-
+obsTyr=targetyear
 
 ## The target of the leadtime should change according to which initialisation.
 strtm = (1, 4, 7, 10)  # which is the starting month for each initialisation
-tMnth = leadtimeMonth+strtm[whichinit-1]-1
+obsTmnth = leadtimeMonth+strtm[whichinit-1]-1
+if (obsTmnth>12):
+    obsTyr=obsTyr+1
+    obsTmnth=obsTmnth-12
 
-
-print('Targetyear= '+str(targetyear)+',initialisation ='+str(whichinit)+',leadtime ='+str(leadtimeMonth)+' and target month is'+str(tMnth)  # Testing
+print('Targetyear = '+str(targetyear)+',initialisation = '+str(whichinit)+' which means from '+ str(strtm[whichinit-1]) +',leadtime '+str(leadtimeMonth)+' so target month is '+str(obsTmnth)+' of year '+str(obsTyr))  # Testing
 
 Grdlen = 126858  # For now we are pre-setting these. Dims[3] = 126858
 EMlen = 10  # Dims[0]  #30 Ensemble Members
@@ -49,8 +51,8 @@ for EM in np.arange(EMlen):
 
 
 ## Observation for the date already exists?
-file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(targetyear)+'.nc')
-truobs=file_osisaf.variables['obs'][tMnth-1,:]
+file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(obsTyr)+'.nc')
+truobs=file_osisaf.variables['obs'][obsTmnth-1,:]
 file_osisaf.close()
 
 rawFcstCRPSS=np.empty(Grdlen)
@@ -84,12 +86,15 @@ for c,year in  enumerate(histYrs):
 
 
 ## Similarly, let's save Historical observation, for only Feb of each year in histYRs for now
-histObs=np.empty((len(histYrs),Grdlen))
+histYrsforObs=histYrs
+if (obsTyr>targetyear):
+    histYrsforObs=np.arange(2003,targetyear)  # Now let's include all years until target within hist
+histObs=np.empty((len(histYrsforObs),Grdlen))
 
-for c,year in  enumerate(histYrs):
+for c,year in  enumerate(histYrsforObs):
     #print(year)
     file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(year)+'.nc')
-    obs=file_osisaf.variables['obs'][tMnth-1,:]
+    obs=file_osisaf.variables['obs'][obsTmnth-1,:]
     histObs[c,:]=obs
     file_osisaf.close()
 
