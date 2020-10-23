@@ -18,7 +18,6 @@ longJcalSPSarr=rawSPSarr
 
 for(yy in 1:length(inYR)){
   ## Section to collect SPS for forecast that is already bias corrected by longjian
-  file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+'_MEM_ens_mon_mean_corr.nc')
   loadname=sprintf("%s/F%02d_MEM_ens_mon_mean_corr.nc",data_path,(inYR[yy]-2000))
   #Let's HOPE it all exists, because not sure how to do order of operation
   # if(!file.exists(loadname)) next()
