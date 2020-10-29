@@ -74,6 +74,12 @@ calIIEEarr=calOarr+calUarr
 Mon_rawIIEE=apply(rawIIEEarr, c(2,3),mean,na.rm=T)
 Mon_calIIEE=apply(calIIEEarr, c(2,3),mean,na.rm=T)
 
+
+# rawAEEarr=abs(rawOarr- rawUarr )
+# rawMEarr=rawIIEEarr-rawAEEarr
+# calAEEarr=abs(calOarr-calUarr)
+# calMEarr=calIIEEarr-calAEEarr
+
 save(file = Allsavename,version = 2,grd,calIIEEarr,rawIIEEarr,inYR,Mon_rawIIEE,Mon_calIIEE,rawOarr,rawUarr,calOarr,calUarr)
 file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)))
 print("Done!")
