@@ -15,7 +15,7 @@ data_path ='/work/ba1138/a270112/awicm3/FCST_CLIM/'
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/'
 
 
-trust_sharp_fcst = True
+trust_sharp_fcst = False
 
 
 # Which year are we targetting? And what month?
@@ -235,7 +235,7 @@ print("Calibratting done! Now saving result file")
 
 ### the part where I try to save the calibrated forecasts:
 
-filename = save_path+'Forecast_Calibration_BigHist_Yr'+str(targetyear)+'_'+str(whichinit).zfill(2)+'Mn_'+str(leadtimeMonth).zfill(2)+'.nc'
+filename = save_path+'Forecast_Calibration_TrustSharpFalse_Yr'+str(targetyear)+'_'+str(whichinit).zfill(2)+'Mn_'+str(leadtimeMonth).zfill(2)+'.nc'
 ncfile = Dataset(filename, 'w', format='NETCDF4_CLASSIC')
 # create dimensions
 ncfile.createDimension('n2d', 126858)
