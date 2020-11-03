@@ -14,6 +14,10 @@ from netCDF4 import Dataset, num2date
 data_path ='/work/ba1138/a270112/awicm3/FCST_CLIM/'
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/'
 
+
+trust_sharp_fcst = True
+
+
 # Which year are we targetting? And what month?
 # python filenam.py 2015 1 6
 targetyear = int(sys.argv[1])
@@ -138,7 +142,6 @@ for g in np.arange(Grdlen):
     # X_t=fcst_target[:,1,leadtimeMonth-1,g] # Do we need this?
     X_ta_params, Y_ta_params, X_t_params = taqminst.fit_params(X_ta,Y_ta,X_t)
 
-    trust_sharp_fcst = True
 
     # Now calibrate the forecast ensemble using the calibrate() method:
 
