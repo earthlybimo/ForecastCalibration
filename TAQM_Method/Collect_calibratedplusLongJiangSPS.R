@@ -5,7 +5,7 @@ library(ncdf4);library(spheRlab)
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults'  #Where TAQMcalibrated forecasts were saved
 data_path='/work/ba1138/a270112/awicm3/FCST_CLIM'
 
-Allsavename=paste0(save_path,"/CollectedSPSResultPlusLongjiang")
+Allsavename=paste0("/work/ba1138/a270138/BiasCorrOutput/CollectedSPSResultPlusLongjiang")
 
 ##First we need the gridinfo to compute SPS
 grd = sl.grid.readNCDF("/mnt/lustre02/work/ab0995/a270112/data_fesom2/griddes.nc")

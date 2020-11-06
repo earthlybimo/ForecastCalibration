@@ -3,7 +3,7 @@
 library(ncdf4);library(spheRlab)
 
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults'
-Allsavename=paste0(save_path,"/Collected_IIEE_Results")
+Allsavename=paste0("/work/ba1138/a270138/BiasCorrOutput/Collected_IIEE_Results")
 
 binarise <-function (somearr,dlevel) {  #Function to binarise some given array  based on  this level
 ll=dim(somearr)
