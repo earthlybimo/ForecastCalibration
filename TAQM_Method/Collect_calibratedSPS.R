@@ -25,12 +25,12 @@ for(yy in 1:length(inYR)){
       obsSIP=ncvar_get(fl,"SIP_FCST_OBS")
       nc_close(fl)
       
-      preSPS=(obsSIP-rawSIP)^2   #Diff between model and satelite
+      preSPS=(rawSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
       SPSraw=sum(preSPS2)*(10^-12)
       rawSPSarr[yy,init,mm]=SPSraw
       remove(preSPS2,preSPS)
-      preSPS=(calSIP-rawSIP)^2   #Diff between model and satelite
+      preSPS=(calSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
       SPScal=sum(preSPS2)*(10^-12)
       calSPSarr[yy,init,mm]=SPScal
