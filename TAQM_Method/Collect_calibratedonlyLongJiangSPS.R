@@ -1,4 +1,5 @@
 library(ncdf4);library(spheRlab)
+### Script to compute and save SPS for forecasts calibrated by Longjiang's method, using the original files saved by Longjiang.
 
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults'  #Where TAQMcalibrated forecasts were saved
 data_path='/work/ba1138/a270112/awicm3/FCST_CLIM'
@@ -28,28 +29,31 @@ for(yy in 1:length(inYR)){
   obsTyr=inYR[yy]
   for(init in 1:4){
     for(mm in 1:12){
+      obsTyr=inYR[yy]
       obsTmnth = mm+strtm[init]-1
       if (obsTmnth>12){
         obsTyr=obsTyr+1
         obsTmnth=obsTmnth-12}
       
       # print('Targetyear = '+str(targetyear)+',initialisation = '+str(init)+' which means from '+ str(strtm[init-1]) +',leadtime '+str(leadtimeMonth)+' so target month is '+str(obsTmnth)+' of year '+str(obsTyr))  # Testing
+      
       loadname=paste0("/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_",obsTyr,".nc")
       if(!file.exists(loadname)) next()
       fl=nc_open(loadname)
       obsVar1=ncvar_get(fl,"obs") # num [1:126858, 1:12]
       nc_close(fl)
       
+      obsVar2=obsVar1[,obsTmnth]
       obsSIP=array(dim =length(grd$lat))
-      obsSIP[obsVar1[,obsTmnth]>=0.15]=1
-      obsSIP[obsVar1[,obsTmnth]<0.15]=0
+      obsSIP[obsVar2>=0.15]=1
+      obsSIP[obsVar2<0.15]=0
       
       preSPS=(longcalSIP[,mm,init]-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
       SPScal=sum(preSPS2,na.rm = T)*(10^-12)
       longJcalSPSarr[yy,init,mm]=SPScal
       
-      remove(obsSIP,obsVar1,SPScal,preSPS2,preSPS)
+      remove(obsSIP,obsVar1,obsVar2,SPScal,preSPS2,preSPS)
       
     }
   }
