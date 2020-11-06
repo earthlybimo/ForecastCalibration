@@ -6,12 +6,12 @@ save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults'
 Allsavename=paste0("/work/ba1138/a270138/BiasCorrOutput/Collected_IIEE_Results")
 
 binarise <-function (somearr,dlevel) {  #Function to binarise some given array  based on  this level
-ll=dim(somearr)
-if (is.null(ll)){ll=length(somearr)}  #because 1d arrays dont do
-ibinar=array(dim =ll)
-ibinar[somearr[]>=dlevel]=1
-ibinar[somearr[]<dlevel]=0
-return (ibinar)
+  ll=dim(somearr)
+  if (is.null(ll)){ll=length(somearr)}  #because 1d arrays dont do
+  ibinar=array(dim =ll)
+  ibinar[somearr[]>=dlevel]=1
+  ibinar[somearr[]<dlevel]=0
+  return (ibinar)
 }
 
 ##First we need the gridinfo to compute IIEE
@@ -37,31 +37,29 @@ for(yy in 1:length(inYR)){
       nc_close(fl)
       
       rawSIPmed=binarise(rawSIP,0.5)
+      temp=(obsSIP-rawSIPmed)
+      tempU=array(0,dim=dim(temp));tempO=tempU
+      
+      tempU[temp>0]=1  #Underforecast area
+      U=sum(tempU*grd$cell_area,na.rm=T)  #And sum
+      tempO[temp<0]=1 #Overforecast area
+      O=sum(tempO*grd$cell_area,na.rm=T)
+      rawUarr[yy,init,mm]=U*(10^-12)
+      rawOarr[yy,init,mm]=O*(10^-12)
+      
+      remove(O,U,temp,rawSIPmed,tempU,tempO)
+      
       calSIPmed=binarise(calSIP,0.5)
+      temp=(obsSIP-calSIPmed)
+      tempU=array(0,dim=dim(temp));tempO=tempU
       
-      Umap=binarise((obsSIP-rawSIPmed),0) #Region of Under-estimate (only)
-      preU=Umap*grd$cell_area  #Multiply by area
-      U=sum(preU,na.rm = T)
-      rawUarr[yy,init,mm]=U
-      
-      Omap=binarise((rawSIPmed-obsSIP),0) #Region of Over-estimate (only)
-      preO=Omap*grd$cell_area  #Multiply by area
-      O=sum(preO,na.rm = T)
-      rawOarr[yy,init,mm]=O
-      
-      remove(Umap,preU,U,Omap,preO,O)
-      
-      Umap=binarise((obsSIP-calSIPmed),0) #Region of Under-estimate (only)
-      preU=Umap*grd$cell_area  #Multiply by area
-      U=sum(preU,na.rm = T)
-      calUarr[yy,init,mm]=U
-      
-      Omap=binarise((calSIPmed-obsSIP),0) #Region of Over-estimate (only)
-      preO=Omap*grd$cell_area  #Multiply by area
-      O=sum(preO,na.rm = T)
-      calOarr[yy,init,mm]=O
-      
-      remove(Umap,preU,U,Omap,preO,O)
+      tempU[temp>0]=1  #Underforecast area
+      U=sum(tempU*grd$cell_area,na.rm=T)  #And sum
+      tempO[temp<0]=1 #Overforecast area
+      O=sum(tempO*grd$cell_area,na.rm=T)
+      calUarr[yy,init,mm]=U*(10^-12)
+      calOarr[yy,init,mm]=O*(10^-12)
+      remove(O,U,temp,calSIPmed,tempU,tempO)
       
       remove(rawSIP,calSIP,obsSIP)
       
