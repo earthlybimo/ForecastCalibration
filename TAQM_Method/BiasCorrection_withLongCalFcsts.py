@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-### Script for saving Longjiang SPS. Will loop over target year, which initialisation (1 to 4) and target month will be system/cmndline argument, so we can run this using sbatch. The 'historic' period will always be years 2003 to 2019.
+### Script for saving Longjiang SPS. Will loop over target year, which initialisation (1 to 4) and target month will be system/cmndline argument, so we can run this using sbatch. The 'historic' period be from 2003 to (not inclusive) Fcst year .
 
 
 import numpy as np
@@ -20,7 +20,8 @@ trust_sharp_fcst = True
 
 # Which year are we targetting? And what month?
 # python filenam.py 2015 1 6
-targetyear = int(sys.argv[1])
+Ylist=np.arange(start=2011,stop=2020)  #This actually means stop at 2019
+targetyear = Ylist[int(sys.argv[1])]
 histYrs=np.arange(2003,targetyear)  # Now let's include all years until target within hist
 obsTyr=targetyear
 
