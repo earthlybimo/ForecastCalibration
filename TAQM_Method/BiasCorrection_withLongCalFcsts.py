@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-### Script for doing bias correction. Target year, which initialisation (1 to 4) and target month will be system/cmndline argument, so we can run this using sbatch. The 'historic' period will always be years 2003 to 2019.
+### Script for saving Longjiang SPS. Will loop over target year, which initialisation (1 to 4) and target month will be system/cmndline argument, so we can run this using sbatch. The 'historic' period will always be years 2003 to 2019.
 
 
 import numpy as np
@@ -15,21 +15,33 @@ data_path ='/work/ba1138/a270112/awicm3/FCST_CLIM/'
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/'
 
 
-trust_sharp_fcst = False
+trust_sharp_fcst = True
 
 
 # Which year are we targetting? And what month?
 # python filenam.py 2015 1 6
 targetyear = int(sys.argv[1])
-leadtimeMonth = int(sys.argv[3])  #Leadtime, in month
-# whichinit=1#
-whichinit = int(sys.argv[2])  #Must be within 1 to 4
-# histYrs=np.arange(2003,2011)
 histYrs=np.arange(2003,targetyear)  # Now let's include all years until target within hist
 obsTyr=targetyear
 
 ## The target of the leadtime should change according to which initialisation.
 strtm = (1, 4, 7, 10)  # which is the starting month for each initialisation
+Grdlen = 126858  # For now we are pre-setting these. Dims[3] = 126858
+EMlen = 10  # Dims[0]  #30 Ensemble Members, but older forecasts have only 10 so we are using only 10 for the historical period
+
+fcst_target = np.empty((EMlen,12,Grdlen))
+## First let's save targetFcst
+yr=str(targetyear-2000)       # current year
+file_anom0 = Dataset(data_path+'F'+str(yr)+'_MEM_ens_mon_mean_corr.nc')
+fcst_target0=file_anom0.variables['SIC_FCST_CORR'][:]
+file_anom0.close()
+
+
+#### Here's where the loop should start
+leadtimeMonth = 1#int(sys.argv[3])  #Leadtime, in month
+whichinit=2 # whichinit = int(sys.argv[2])  #Must be within 1 to 4
+fcst_target=fcst_target0[:,whichinit,:,:]
+
 obsTmnth = leadtimeMonth+strtm[whichinit-1]-1
 if (obsTmnth>12):
     obsTyr=obsTyr+1
@@ -37,18 +49,12 @@ if (obsTmnth>12):
 
 print('Targetyear = '+str(targetyear)+',initialisation = '+str(whichinit)+' which means from '+ str(strtm[whichinit-1]) +',leadtime '+str(leadtimeMonth)+' so target month is '+str(obsTmnth)+' of year '+str(obsTyr))  # Testing
 
-Grdlen = 126858  # For now we are pre-setting these. Dims[3] = 126858
-EMlen = 10  # Dims[0]  #30 Ensemble Members
-fcst_target = np.empty((EMlen,12,Grdlen))
-## First let's save targetFcst
-yr=str(targetyear-2000)       # current year
-# file_anom0 = Dataset(data_path+'F'+str(yr)+'_MEM_ens_mon_mean_corr.nc')
-for EM in np.arange(EMlen):
-    file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+str(whichinit)+'_ens_mon_mean/SIC_mon_'+str(EM+1).zfill(2)+'.nc')
-    temp=file_anom0.variables['a_ice'][:]
-    fcst_target[EM,:,:]=temp
-    file_anom0.close()
-    del temp
+savefilename = save_path+'Forecast_Calibration_fromLongCalib_Yr'+str(targetyear)+'_'+str(whichinit).zfill(2)+'Mn_'+str(leadtimeMonth).zfill(2)+'.nc'
+
+### Check if file exists already.
+if (os.path.exists(savefilename)):
+    print("File already exists.")
+    # continue
 
 #plt.plot(fcst_anom[1,1,1,])
 #plt.show()
@@ -80,19 +86,11 @@ for c,year in  enumerate(histYrs):
         file_anom0.close()
         del temp
 
-
-
-    # file_anom = Dataset(data_path+'F'+str(yr)+'_MEM_ens_mon_mean_corr.nc')
-    # fcst_anom=file_anom.variables['SIC_FCST_CORR'][:]
-    # histFcst[c,:,:]=fcst_anom[:,1,leadtimeMonth-1,:]
-    # file_anom.close()
-
-
-
 ## Similarly, let's save Historical observation, for only Feb of each year in histYRs for now
 histYrsforObs=histYrs
 if (obsTyr>targetyear):
     histYrsforObs=np.arange(2003,targetyear)  # Now let's include all years until target within hist
+
 histObs=np.empty((len(histYrsforObs),Grdlen))
 
 for c,year in  enumerate(histYrsforObs):
@@ -117,10 +115,6 @@ for g in np.arange(Grdlen):
     tau_t=histYrs
     t=targetyear
 
-    # if(np.std(Y)<0.025):  #Maybe this should not be run the same way
-        # print("Should skip this grid point. Somehow.")
-        # continue
-        # print("low stDev for Y")
     # Get TAMH from MH
     pval_x = linregress(tau_t,X.mean(axis=1))[3]  #check the p-value for MH trend over tau_t
     if pval_x<0.05:
@@ -139,15 +133,13 @@ for g in np.arange(Grdlen):
         # else, set TAOH equal to OH (i.e. don't perform the trend adjustment)
         Y_ta = np.copy(Y)
 
-    # X_t=fcst_target[:,1,leadtimeMonth-1,g] # Do we need this?
+
     X_ta_params, Y_ta_params, X_t_params = taqminst.fit_params(X_ta,Y_ta,X_t)
 
 
     # Now calibrate the forecast ensemble using the calibrate() method:
 
     X_t_cal_params, X_t_cal = taqminst.calibrate(X_ta_params, Y_ta_params, X_t_params,X_ta, Y_ta, X_t,trust_sharp_fcst)
-
-    ## Why are some points problematic!!!!
 
     # Next, we’re going to compute the SIP quantity for the raw and calibrated forecast, plot all cumulative distributions, and calculate the continuous rank probability score (CRPS) for the raw and calibrated forecast.
 
@@ -189,25 +181,6 @@ for g in np.arange(Grdlen):
             cdf_x_t_cal = beinf.cdf_eval(x, X_t_cal_params, X_t_cal)
             sip_x_t_cal = 1.0 - beinf.cdf_eval(x_c, X_t_cal_params, X_t_cal)
 
-
-    # In[30]: Plot CDF
-
-    # fig = plt.figure()
-    # ax1 = fig.add_subplot(1,2,1)
-    # ax1.set_ylim((0.0,1.01))
-    # ax1.plot(x, cdf_y_ta, 'g-',label='TAMH', lw=1.5)
-    # ax1.plot(x, cdf_x_ta, 'y-',label='TAOH', lw=1.5)
-    # ax1.legend(loc='lower right')
-
-    # # fig = plt.figure()
-    # ax2 = fig.add_subplot(1,2,2)
-    # ax2.set_ylim((0.0,1.01))
-    # ax2.plot(x, cdf_x_t, 'b-',label='Raw Fcst', lw=1.5)
-    # ax2.plot(x, cdf_x_t_cal, 'r-',label='TAQM Fcst', lw=1.5)
-    # ax2.legend(loc='lower right')
-
-    # plt.show()
-
     Y_t = truobs[g]
 
     if(Y_t >= 0):  # To avoid the mask
@@ -220,8 +193,6 @@ for g in np.arange(Grdlen):
     # CRPS for the raw forecast
     crps_x_t = np.trapz((cdf_x_t - cdf_obs)**2., x)
     # print (crps_x_t)
-    # >>> 0.0277481871254
-
     # CRPS for the calibrated forecast
     crps_x_t_cal = np.trapz((cdf_x_t_cal - cdf_obs)**2., x)
     # print (crps_x_t_cal)
@@ -235,8 +206,8 @@ print("Calibratting done! Now saving result file")
 
 ### the part where I try to save the calibrated forecasts:
 
-filename = save_path+'Forecast_Calibration_TrustSharpFalse_Yr'+str(targetyear)+'_'+str(whichinit).zfill(2)+'Mn_'+str(leadtimeMonth).zfill(2)+'.nc'
-ncfile = Dataset(filename, 'w', format='NETCDF4_CLASSIC')
+savefilename = save_path+'Forecast_Calibration_fromLongCalib_Yr'+str(targetyear)+'_'+str(whichinit).zfill(2)+'Mn_'+str(leadtimeMonth).zfill(2)+'.nc'
+ncfile = Dataset(savefilename, 'w', format='NETCDF4_CLASSIC')
 # create dimensions
 ncfile.createDimension('n2d', 126858)
 # ncfile.createDimension('fcst',4)
@@ -260,4 +231,6 @@ Fcst_obs_to_write[:] = obsSIP
 
 # close ncfile
 ncfile.close()
-print('Saved file: ' + filename)
+print('Saved file: ' + savefilename)
+
+### Delete variables and end loop
