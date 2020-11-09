@@ -54,7 +54,7 @@ for leadtimeMonth in np.arange(start=1,stop=13, ):
         ### Check if file exists already.
         if (os.path.exists(savefilename)):
             print("File already exists.")
-            # continue
+            continue
 
         ## Observation for the date already exists?
         file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(obsTyr)+'.nc')
