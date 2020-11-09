@@ -42,7 +42,7 @@ for leadtimeMonth in np.arange(start=1,stop=13, ):
     for whichinit in np.arange(start=1,stop=5, ):
     # leadtimeMonth = 1#int(sys.argv[3])  #Leadtime, in month
     # whichinit=2 # whichinit = int(sys.argv[2])  #Must be within 1 to 4
-        fcst_target=fcst_target0[:,whichinit,:,:]
+        fcst_target=fcst_target0[:,(whichinit-1),:,:]
 
         obsTmnth = leadtimeMonth+strtm[whichinit-1]-1
         if (obsTmnth>12):
