@@ -3,7 +3,7 @@
 library(ncdf4);library(spheRlab)
 
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults'
-Allsavename=paste0("/work/ba1138/a270138/BiasCorrOutput/Collected_IIEE_Results")
+Allsavename=paste0("/work/ba1138/a270138/BiasCorrOutput/CollectedIIEE_Results")
 
 binarise <-function (somearr,dlevel) {  #Function to binarise some given array  based on  this level
   ll=dim(somearr)
@@ -78,7 +78,7 @@ Mon_calIIEE=apply(calIIEEarr, c(2,3),mean,na.rm=T)
 # calAEEarr=abs(calOarr-calUarr)
 # calMEarr=calIIEEarr-calAEEarr
 
-save(file = Allsavename,version = 2,grd,calIIEEarr,rawIIEEarr,inYR,Mon_rawIIEE,Mon_calIIEE,rawOarr,rawUarr,calOarr,calUarr)
+save(file = Allsavename,version = 2,grd,calIIEEarr,rawIIEEarr,inYR,Mon_rawIIEE,Mon_calIIEE,rawOarr,calOarr)
 file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)))
 print("Done!")
 

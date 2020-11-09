@@ -54,7 +54,7 @@ for(yy in 1:length(inYR)){
       
       preSPS=(longcalSIP[,mm,init]-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
-      SPScal=sum(preSPS2)*(10^-12)
+      SPScal=sum(preSPS2,na.rm = T)*(10^-12)
       longJcalSPSarr[yy,init,mm]=SPScal
       
       remove(rawSIP,calSIP,obsSIP,SPSraw,SPScal,preSPS2,preSPS)
