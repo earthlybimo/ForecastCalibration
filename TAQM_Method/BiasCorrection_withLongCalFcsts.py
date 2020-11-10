@@ -21,7 +21,7 @@ trust_sharp_fcst = True
 # Which year are we targetting? And what month?
 # python filenam.py 2015 1 6
 Ylist=np.arange(start=2011,stop=2020)  #This actually means stop at 2019
-targetyear = Ylist[int(sys.argv[1])]
+targetyear = Ylist[int(sys.argv[1])-1]
 histYrs=np.arange(2003,targetyear)  # Now let's include all years until target within hist
 obsTyr=targetyear
 
