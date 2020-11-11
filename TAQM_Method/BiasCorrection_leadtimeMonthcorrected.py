@@ -62,9 +62,9 @@ file_osisaf.close()
 rawFcstCRPSS=np.empty(Grdlen)
 calFcstCRPSS=np.empty(Grdlen)
 
-obsSIP=np.empty(Grdlen)
-rawSIP=np.empty(Grdlen)
-calSIP=np.empty(Grdlen)
+obsSIP = np.empty(Grdlen) * np.nan
+rawSIP = np.empty(Grdlen)
+calSIP = np.empty(Grdlen)
 
 ## Let's save Historical Forecast, for only month 2 of forecast 1 of each year in histYRs for now
 histFcst=np.empty((len(histYrs),EMlen,Grdlen))
