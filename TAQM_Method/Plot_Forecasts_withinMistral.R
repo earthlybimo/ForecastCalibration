@@ -36,9 +36,9 @@ for (yy in 1:8) {
 
   ###print('Targetyear = '+str(targetyear)+',initialisation = '+str(init)+' which means from '+ str(strtm[init-1]) +',leadtime '+str(leadtimeMonth)+' so target month is '+str(obsTmnth)+' of year '+str(obsTyr))  # Testing, python code so need to correct
 
-  loadname=paste0("/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_",obsTyr,".nc")
-  if(!file.exists(loadname)) next()
-  fl=nc_open(loadname)
+  obsloadname=paste0("/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_",obsTyr,".nc")
+  if(!file.exists(obsloadname)) next()
+  fl=nc_open(obsloadname)
   obsVar1=ncvar_get(fl,"obs") # num [1:126858, 1:12]
   nc_close(fl)
 
@@ -74,17 +74,17 @@ for (yy in 1:8) {
   fl=nc_open(loadname)
   rawSIP=ncvar_get(fl,"SIP_FCST_RAW")
   calSIP=ncvar_get(fl,"SIP_FCST_CORR")
-  # obsSIP=ncvar_get(fl,"SIP_FCST_OBS")
+  obsSIP2=ncvar_get(fl,"SIP_FCST_OBS")
   nc_close(fl)
   
   preSPS=(rawSIP-obsSIP)^2   #Diff between model and satelite
   preSPS2=preSPS*grd$cell_area
-  SPSraw=sum(preSPS2)*(10^-12)
+  SPSraw=sum(preSPS2,na.rm = T)*(10^-12)
 
   remove(preSPS2,preSPS)
   preSPS=(calSIP-obsSIP)^2   #Diff between model and satelite
   preSPS2=preSPS*grd$cell_area
-  SPScal=sum(preSPS2)*(10^-12)
+  SPScal=sum(preSPS2,na.rm = T)*(10^-12)
 
   ## Plot Forecast
   pir = sl.plot.init(projection="polar",polar.latbound = 50,file.name = sprintf("%s/TAQMcalSIP_%d_init%d_leadtime%02d.pdf",Figpath,inYR[yy],init,mm))
