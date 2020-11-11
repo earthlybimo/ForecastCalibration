@@ -74,7 +74,7 @@ for (yy in 1:8) {
   fl=nc_open(loadname)
   rawSIP=ncvar_get(fl,"SIP_FCST_RAW")
   calSIP=ncvar_get(fl,"SIP_FCST_CORR")
-  obsSIP2=ncvar_get(fl,"SIP_FCST_OBS")
+  obsSIP2=ncvar_get(fl,"SIP_FCST_OBS")  #Slight difference betwn this obs and the obs we found directly, this one gave some NA points as 0, mistake while saving in python.
   nc_close(fl)
   
   preSPS=(rawSIP-obsSIP)^2   #Diff between model and satelite

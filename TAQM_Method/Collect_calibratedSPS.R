@@ -3,7 +3,7 @@
 library(ncdf4);library(spheRlab)
 
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults'
-Allsavename=paste0(save_path,"/CollectedSPSResult")
+Allsavename=paste0(save_path,"/CollectedSPSResult_TrustSharpFalse")
 
 ##First we need the gridinfo to compute SPS
 grd = sl.grid.readNCDF("/mnt/lustre02/work/ab0995/a270112/data_fesom2/griddes.nc")
@@ -16,7 +16,7 @@ calSPSarr=rawSPSarr
 for(yy in 1:length(inYR)){
   for(init in 1:4){
     for(mm in 1:12){
-      loadname=sprintf("%s/Forecast_Calibration_BigHist_Yr%d_%02dMn_%02d.nc",save_path,inYR[yy],init,mm)
+      loadname=sprintf("%s/Forecast_Calibration_TrustSharpFalse_Yr%d_%02dMn_%02d.nc",save_path,inYR[yy],init,mm)
       if(!file.exists(loadname)) next()
       
       fl=nc_open(loadname)
