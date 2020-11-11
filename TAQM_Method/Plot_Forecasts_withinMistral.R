@@ -97,6 +97,7 @@ for (yy in 1:8) {
   pir = sl.plot.init(projection="polar",polar.latbound = 50,file.name = sprintf("%s/rawSIP_%d_init%d_leadtime%02d.pdf",Figpath,inYR[yy],init,mm))
   pcol= sl.plot.field.elem(pir,num=rawSIP,lon=grd$lon,lat = grd$lat,elem = grd$elem)
   res = sl.plot.naturalearth(pir,fill.col = "grey",lines.col = "grey")
+  res=sl.plot.text(pir,lon=120,lat=65,labels = paste0("SPS = ",SPSraw))
   sl.plot.lonlatgrid(pir, pole.hole=TRUE,col = "grey",labels = TRUE)
   sl.plot.end(pir)
   
