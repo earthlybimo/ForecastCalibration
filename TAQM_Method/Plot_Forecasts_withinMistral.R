@@ -5,6 +5,7 @@ grd = sl.grid.readNCDF("/mnt/lustre02/work/ab0995/a270112/data_fesom2/griddes.nc
 
 data_path='/work/ba1138/a270112/awicm3/FCST_CLIM'
 Figpath="/pf/a/a270138/Data/BiasCorrOutput/Figs"
+save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults'
 
 inYR=2011:2018  #among which year
 # longJcalSPSarr=array(dim=c(length(inYR),4,12))
