@@ -63,7 +63,7 @@ for(yy in 1:length(inYR)){
     }
   }
 }
-on_rawSPS=apply(rawSPSarr, c(2,3),mean,na.rm=T)
+Mon_rawSPS=apply(rawSPSarr, c(2,3),mean,na.rm=T)
 Mon_calSPS=apply(calSPSarr, c(2,3),mean,na.rm=T)
 
 save(file = Allsavename,version = 2,grd,calSPSarr,rawSPSarr,inYR,Mon_rawSPS,Mon_calSPS)
