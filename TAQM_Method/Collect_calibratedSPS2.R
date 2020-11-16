@@ -26,7 +26,7 @@ for(yy in 1:length(inYR)){
         obsTyr=obsTyr+1
         obsTmnth=obsTmnth-12}
       
-      # print('Targetyear = '+str(targetyear)+',initialisation = '+str(init)+' which means from '+ str(strtm[init-1]) +',leadtime '+str(leadtimeMonth)+' so target month is '+str(obsTmnth)+' of year '+str(obsTyr))  # Testing
+      # print(paste0('Targetyear = ',(inYR[yy]),',initialisation = ',(init),' which means from ', (strtm[init]) ,',leadtime ',(mm),' so target month is ',(obsTmnth),' of year ',(obsTyr)))  # Testing
       
       loadname=paste0("/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_",obsTyr,".nc")
       if(!file.exists(loadname)) next()
