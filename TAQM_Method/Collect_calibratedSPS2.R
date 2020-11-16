@@ -39,7 +39,7 @@ for(yy in 1:length(inYR)){
       obsSIP[obsVar2<0.15]=0
 
       # loadname=sprintf("%s/Forecast_Calibration_TrustSharpFalse_Yr%d_%02dMn_%02d.nc",save_path,inYR[yy],init,mm)      
-      loadname=sprintf("%s/Forecast_Calibration_BigHist_Yr%d_%02dMn_%02d.nc",save_path,inYR[yy],init,mm)
+      loadname=sprintf("%s/Forecast_Calibration_TrustSharpFalse_Yr%d_%02dMn_%02d.nc",save_path,inYR[yy],init,mm)
       if(!file.exists(loadname)) next()
       
       fl=nc_open(loadname)
