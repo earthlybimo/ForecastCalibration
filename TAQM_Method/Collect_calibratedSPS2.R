@@ -4,7 +4,7 @@ library(ncdf4);library(spheRlab)
 
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults'
 data_path='/work/ba1138/a270112/awicm3/FCST_CLIM'  #Where the obs are
-Allsavename=paste0(save_path,"/CollectedSPSResult_TrustSharpTrue_corrected")
+Allsavename=paste0(save_path,"/CollectedSPSResult_TrustSharpFalse_corrected")
 
 ##First we need the gridinfo to compute SPS
 grd = sl.grid.readNCDF("/mnt/lustre02/work/ab0995/a270112/data_fesom2/griddes.nc")
