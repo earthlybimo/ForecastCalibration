@@ -14,8 +14,8 @@ strtm = c(1, 4, 7, 10)  # which is the starting month for each initialisation
 #Which forecast, what time.
 yy=2  #2012
 init=3
-mm=1 #lead time month
-for (yy in 1:8) {
+mm=3 #lead time month
+for (yy in 4:5) {
   
   
   ## First for Longjiang's output
