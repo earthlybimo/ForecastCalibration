@@ -255,7 +255,10 @@ ncfile.createDimension('n2d', 126858)
 Fcst_corr_to_write = ncfile.createVariable('SIP_FCST_CORR', 'd', ('n2d'))
 Fcst_raw_to_write = ncfile.createVariable('SIP_FCST_RAW', 'd', ('n2d'))
 Fcst_obs_to_write = ncfile.createVariable('SIP_FCST_OBS', 'd', ('n2d'))
-
+Fcst_obssic_to_write = ncfile.createVariable('SIC_OBS', 'd', ('n2d'))
+Fcst_rawsic1_to_write = ncfile.createVariable('SIC_RAW', 'd', ('n2d'))
+Fcst_rawsic2_to_write = ncfile.createVariable('SIC_RAW_dist', 'd', ('n2d'))
+Fcst_calsic_to_write = ncfile.createVariable('SIC_Cal', 'd', ('n2d'))
 
 # attributes
 # Fcst_corr_to_write.units = 'change in hours'
@@ -265,6 +268,11 @@ Fcst_obs_to_write = ncfile.createVariable('SIP_FCST_OBS', 'd', ('n2d'))
 Fcst_corr_to_write[:] = calSIP
 Fcst_raw_to_write[:] = rawSIP
 Fcst_obs_to_write[:] = obsSIP
+
+Fcst_obssic_to_write[:] = obsMeanSIC
+Fcst_rawsic1_to_write[:] = rawMeanSIC
+Fcst_rawsic2_to_write[:] = rawMeanSIC2
+Fcst_calsic_to_write[:] = calMeanSIC
 
 
 # close ncfile
