@@ -38,24 +38,27 @@ if (obsTmnth>12):
 print('Targetyear = '+str(targetyear)+',initialisation = '+str(whichinit)+' which means from '+ str(strtm[whichinit-1]) +',leadtime '+str(leadtimeMonth)+' so target month is '+str(obsTmnth)+' of year '+str(obsTyr))  # Testing
 
 Grdlen = 126858  # For now we are pre-setting these. Dims[3] = 126858
-EMlen = 10  # Dims[0]  #30 Ensemble Members
+EMlen = 30  # Dims[0]  #30 Ensemble Members
 fcst_target = np.empty((EMlen,12,Grdlen))
 ## First let's save targetFcst
 yr=str(targetyear-2000)       # current year
 # file_anom0 = Dataset(data_path+'F'+str(yr)+'_MEM_ens_mon_mean_corr.nc')
 for EM in np.arange(EMlen):
-    file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+str(whichinit)+'_ens_mon_mean/SIC_mon_'+str(EM+1).zfill(2)+'.nc')
-    temp=file_anom0.variables['a_ice'][:]
-    fcst_target[EM,:,:]=temp
-    file_anom0.close()
-    del temp
-
+    try:
+        file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+str(whichinit)+'_ens_mon_mean/SIC_mon_'+str(EM+1).zfill(2)+'.nc')
+        temp=file_anom0.variables['a_ice'][:]
+        fcst_target[EM,:,:]=temp
+        file_anom0.close()
+        del temp
+    except IOError:
+        0#Nothing?
 #plt.plot(fcst_anom[1,1,1,])
 #plt.show()
 
 
 ## Observation for the date already exists?
 file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(obsTyr)+'.nc')
+
 truobs=file_osisaf.variables['obs'][obsTmnth-1,:]
 file_osisaf.close()
 
@@ -70,7 +73,8 @@ rawMeanSIC2 = np.empty(Grdlen)
 calMeanSIC = np.empty(Grdlen)
 obsMeanSIC = np.empty(Grdlen)
 
-## Let's save Historical Forecast, for only month 2 of forecast 1 of each year in histYRs for now
+## Let's save Historical Forecast
+EMlen=10 # Here we use only 10 forecasts since we don't have all 30 EM for some years
 histFcst=np.empty((len(histYrs),EMlen,Grdlen))
 
 for c,year in  enumerate(histYrs):
@@ -78,7 +82,12 @@ for c,year in  enumerate(histYrs):
     yr=str(year-2000)       # current year
     lyr=str(year-1-2000)    # last year
     for EM in np.arange(EMlen):
-        file_anom0 = Dataset(data_path+'F'+str(yr).zfill(2)+str(whichinit)+'_ens_mon_mean/SIC_mon_'+str(EM+1).zfill(2)+'.nc')
+        fname=(data_path+'F'+str(yr).zfill(2)+str(whichinit)+'_ens_mon_mean/SIC_mon_'+str(EM+1).zfill(2)+'.nc')
+        if not os.path.isfile(fname):
+            # EM not found
+            histFcst[c,EM,:]=np.nan
+            continue
+        file_anom0 = Dataset(fname)
         temp=file_anom0.variables['a_ice'][:]
         histFcst[c,EM,:]=temp[leadtimeMonth-1,:]
         file_anom0.close()
