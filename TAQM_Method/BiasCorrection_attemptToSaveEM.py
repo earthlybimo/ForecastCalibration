@@ -226,14 +226,15 @@ for g in np.arange(Grdlen):
     # ax2.plot(x, cdf_x_t_cal, 'r-',label='TAQM Fcst', lw=1.5)
     # ax2.legend(loc='lower right')
 
-    rawEMnew=np.empty(30)
-    calEM=np.empty(30)
+    # rawEMnew=np.empty(30)
+    # calEM=np.empty(30)
     #Which EM?
     for k in np.arange(30):
         yval=np.interp(X_t[k],x,cdf_x_t)  #This gives the y-val closest to X_t
-        rawEMnew[k]=np.interp(yval,cdf_x_t,x)
-        calEM[k]=np.interp(yval,cdf_x_t_cal,x)
+        rawEMSIC[k,g]=np.interp(yval,cdf_x_t,x)
+        calEMSIC[k,g]=np.interp(yval,cdf_x_t_cal,x)
     # plt.show()
+    # rawEMSIC=np.empty((30,Grdlen))
 
     Y_t = truobs[g]
 
