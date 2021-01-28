@@ -236,6 +236,25 @@ for g in np.arange(Grdlen):
     # plt.show()
     # rawEMSIC=np.empty((30,Grdlen))
 
+    ##
+    if(np.all(X_t==0)):
+        rawEMSIC[:,g]=rawEMSIC[:,g]*0
+        # These are cases where the calibrated forecast cdf is all 1, and raw fcst is all 0, so I hard set the output ensemble to be 0
+        if(np.all(cdf_x_t_cal==1)):
+            calEMSIC[:,g]=calEMSIC[:,g]*0
+        else:
+            print("Case of raw fcst all 0 but cdf_x_t_cal does not agree at point ",g)
+            calEMSIC[:,g]=calEMSIC[:,g]*0  # For now, but clearly this is wrong
+            # !!!!!!!!!!!
+    elif(np.all(X_t==1)):
+            rawEMSIC[:,g]=(rawEMSIC[:,g]*0)+1
+            if(np.all(cdf_x_t_cal==1)):
+                calEMSIC[:,g]=(calEMSIC[:,g]*0)+1
+            else:
+                print("Case of raw fcst all 1 but not cdf_x_t_cal does not agreeat point ",g)
+                calEMSIC[:,g]=(calEMSIC[:,g]*0)+1  # For now, but clearly this is wrong
+                # !!!!!!!!!!!
+
     Y_t = truobs[g]
 
     if(Y_t >= 0):  # To avoid the mask
