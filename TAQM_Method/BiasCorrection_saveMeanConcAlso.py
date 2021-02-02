@@ -12,7 +12,7 @@ import os
 import sys
 from netCDF4 import Dataset, num2date
 data_path ='/work/ba1138/a270112/awicm3/FCST_CLIM/'
-save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/'
+save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/MeanConc/'
 
 ## Switch to decide what to do with sharp forecast (100% probability)
 trust_sharp_fcst = False
@@ -35,6 +35,10 @@ if (obsTmnth>12):
 
 
 print('Targetyear = '+str(targetyear)+',initialisation = '+str(whichinit)+' which means from '+ str(strtm[whichinit-1]) +',leadtime '+str(leadtimeMonth)+' so target month is '+str(obsTmnth)+' of year '+str(obsTyr))  # Testing
+
+filename = save_path+'Forecast_Calibration_TrustSharpFalse_wMeanConc_Yr'+str(targetyear)+'_'+str(whichinit).zfill(2)+'Mn_'+str(leadtimeMonth).zfill(2)+'.nc'
+if os.path.isfile(filename):
+        sys.exit(("File " + os.path.basename(filename) + " already exists! "))
 
 Grdlen = 126858  # For now we are pre-setting these. Dims[3] = 126858
 EMlen = 30  # Dims[0]  #30 Ensemble Members
