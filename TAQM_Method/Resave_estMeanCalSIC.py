@@ -10,7 +10,7 @@ from netCDF4 import Dataset, num2date
 data_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/MeanConc/'
 Grdlen = 126858  # For now we are pre-setting these. Dims[3] = 126858
 
-for targetyear in np.arange(2011,2019):
+for targetyear in np.arange(2011,(2019+1)):
 # targetyear=2014
     SIC_cal_arr=np.empty((4,12,Grdlen))
     SIC_raw_arr=np.empty((4,12,Grdlen))
