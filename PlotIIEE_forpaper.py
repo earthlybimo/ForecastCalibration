@@ -28,12 +28,12 @@ mesh_lon=mesh_area_file.variables['lon'][:]
 mesh_area_file.close()
 
 
-IIEE_osisaf_cim_NH=np.zeros((2019-2011+1,12))
-IIEE_osisaf_cim_SH=np.zeros((2019-2011+1,12))
-IIEE_fcst_NH=np.zeros((2019-2011+1,4,12))
-IIEE_fcst_SH=np.zeros((2019-2011+1,4,12))
+IIEE_osisaf_cim_NH=np.zeros((2018-2011+1,12))
+IIEE_osisaf_cim_SH=np.zeros((2018-2011+1,12))
+IIEE_fcst_NH=np.zeros((2018-2011+1,4,12))
+IIEE_fcst_SH=np.zeros((2018-2011+1,4,12))
 year=2015;mon=4
-for year in np.arange(2012,2019+1):
+for year in np.arange(2012,2018+1):
     yr=str(year-2000)       # current year
     lyr=str(year-1-2000)    # last year
     file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(year)+'.nc')
