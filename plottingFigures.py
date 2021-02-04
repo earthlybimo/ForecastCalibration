@@ -180,4 +180,5 @@ plt.ylabel('RMSE of sea ice concentration')
 plt.title('Antarctic')
 
 plt.tight_layout()
-plt.savefig(('/RMSE_Corrected.png'),dpi=300)
+plt.savefig((Fig_path+'RMSE_Corrected.png'),dpi=300)
+print("Saved file: "+Fig_path+'RMSE_Corrected.png')
