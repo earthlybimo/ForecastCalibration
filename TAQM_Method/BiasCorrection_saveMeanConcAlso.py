@@ -226,9 +226,10 @@ for g in np.arange(Grdlen):
     # ax2.plot(x, cdf_x_t_cal, 'r-',label='TAQM Fcst', lw=1.5)
     # ax2.legend(loc='lower right')
     # plt.show()
-
-    Y_t = truobs[g]
-
+    if os.path.isfile(truobsfile):
+        Y_t = truobs[g]
+    else:
+        Y_t = np.NaN
     # if(Y_t >= 0):  # To avoid the mask
     #     obsSIP[g] = np.int(Y_t >= 0.15)  # Condition, so gives 1 or 0
     rawSIP[g] = sip_x_t
