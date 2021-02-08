@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import os
 import sys
 from netCDF4 import Dataset, num2date
+
+
 # from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults/MeanConc/LongStyle/'
 Fig_path = '/work/ba1138/a270138/BiasCorrOutput/Figs/'
@@ -22,6 +24,13 @@ mesh_area_file.close()
 # ?? where are these mesh.y2 coming from?
 # nod_NH = (mesh.y2>40.)
 # nod_SH = (mesh.y2<0.)
+
+# From another file, but couldn't make it work
+# sys.path.append("/pf/a/a270112/pyfesom2/")
+# import pyfesom2 as pf
+# meshpath='/work/ba1138/a270112/awicm3_input/fesom2/core2_meanz/'
+# mesh=pf.load_mesh(meshpath, abg=[50, 15, -90], usepickle=False)
+
 #Could be something like this?
 nod_NH= (mesh_lat>0.0)
 nod_SH= (mesh_lat<0.0)
