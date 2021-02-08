@@ -36,13 +36,13 @@ nod_NH= (mesh_lat>0.0)
 nod_SH= (mesh_lat<0.0)
 
 # osisaf climatology
-RMSE_osisaf_cim_NH=np.zeros((2019-2011+1,12))
-RMSE_osisaf_cim_SH=np.zeros((2019-2011+1,12))
-RMSE_fcst_NH=np.zeros((2019-2011+1,4,12))
-RMSE_fcst_SH=np.zeros((2019-2011+1,4,12))
+RMSE_osisaf_cim_NH=np.zeros((2018-2011+1,12))
+RMSE_osisaf_cim_SH=np.zeros((2018-2011+1,12))
+RMSE_fcst_NH=np.zeros((2018-2011+1,4,12))
+RMSE_fcst_SH=np.zeros((2018-2011+1,4,12))
 
 year=2015
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     yr=str(year-2000)       # current year
     lyr=str(year-1-2000)    # last year
 
@@ -92,7 +92,7 @@ plt.figure(figsize=(10,7))
 
 plt.subplot(211)
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,0,:])
 for leading in np.arange(0,3):
     plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='blue',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
@@ -101,7 +101,7 @@ plt.text(-4,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year)
 
 
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,1,:])
 for leading in np.arange(0,3):
     plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='orange',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
@@ -110,7 +110,7 @@ plt.text(-4,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year)
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,2,:])
 for leading in np.arange(0,3):
     plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='green',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
@@ -119,7 +119,7 @@ plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,3,:])
 for leading in np.arange(0,3):
     plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='red',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
@@ -128,7 +128,7 @@ plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_osisaf_cim_NH[year-2011,:])
 plt.plot(RMSE_fcst_year,color='k',label='OSI SAF')
 plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='k')
@@ -141,7 +141,7 @@ plt.title('Arctic')
 
 plt.subplot(212)
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_SH[year-2011,0,:])
 for leading in np.arange(0,3):
     plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='blue',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
@@ -150,7 +150,7 @@ plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_SH[year-2011,1,:])
 for leading in np.arange(0,3):
     plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='orange',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
@@ -159,7 +159,7 @@ plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_SH[year-2011,2,:])
 for leading in np.arange(0,3):
     plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='green',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
@@ -168,7 +168,7 @@ plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_SH[year-2011,3,:])
 for leading in np.arange(0,3):
     plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='red',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
@@ -177,7 +177,7 @@ plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_osisaf_cim_SH[year-2011,:])
 plt.plot(RMSE_fcst_year,color='k',label='OSI SAF')
 plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='k')
@@ -189,5 +189,5 @@ plt.ylabel('RMSE of sea ice concentration')
 plt.title('Antarctic')
 
 plt.tight_layout()
-plt.savefig((Fig_path+'RMSE_Corrected.png'),dpi=300)
+plt.savefig((Fig_path+'RMSE_Corrected_until2018.png'),dpi=300)
 print("Saved file: "+Fig_path+'RMSE_Corrected.png')
