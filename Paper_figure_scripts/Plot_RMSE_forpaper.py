@@ -42,6 +42,7 @@ RMSE_fcst_NH=np.zeros((2018-2011+1,4,12))
 RMSE_fcst_SH=np.zeros((2018-2011+1,4,12))
 
 year=2015
+xlen=(2018-2011+1)*12
 for year in np.arange(2011,2018+1):
     yr=str(year-2000)       # current year
     lyr=str(year-1-2000)    # last year
@@ -95,7 +96,7 @@ RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,0,:])
 for leading in np.arange(0,3):
-    plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='blue',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
+    plt.plot(np.arange(leading,xlen,3),RMSE_fcst_year[leading:xlen:3],color='blue',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
 plt.plot(RMSE_fcst_year,color='blue',label='L0-2')
 plt.text(-4,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='blue')
 
@@ -104,7 +105,7 @@ RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,1,:])
 for leading in np.arange(0,3):
-    plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='orange',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
+    plt.plot(np.arange(leading,xlen,3),RMSE_fcst_year[leading:xlen:3],color='orange',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
 plt.plot(RMSE_fcst_year,color='orange',label='L3-5')
 plt.text(-4,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='orange')
 #print(np.mean(RMSE_fcst_year))
@@ -113,29 +114,29 @@ RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,2,:])
 for leading in np.arange(0,3):
-    plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='green',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
+    plt.plot(np.arange(leading,xlen,3),RMSE_fcst_year[leading:xlen:3],color='green',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
 plt.plot(RMSE_fcst_year,color='green',label='L6-8')
-plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='green')
+plt.text(xlen,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='green')
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,3,:])
 for leading in np.arange(0,3):
-    plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='red',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
+    plt.plot(np.arange(leading,xlen,3),RMSE_fcst_year[leading:xlen:3],color='red',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
 plt.plot(RMSE_fcst_year,color='red',label='L9-11')
-plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='red')
+plt.text(xlen,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='red')
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_osisaf_cim_NH[year-2011,:])
 plt.plot(RMSE_fcst_year,color='k',label='OSI SAF')
-plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='k')
+plt.text(xlen,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='k')
 #print(np.mean(RMSE_fcst_year))
 
 plt.legend(frameon=False,loc=2)
-plt.xticks(np.arange(0,108,12),np.arange(2011,2020,1))
+plt.xticks(np.arange(0,xlen,12),np.arange(2011,2020,1))
 plt.ylabel('RMSE of sea ice concentration')
 plt.title('Arctic')
 
@@ -144,46 +145,46 @@ RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_SH[year-2011,0,:])
 for leading in np.arange(0,3):
-    plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='blue',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
+    plt.plot(np.arange(leading,xlen,3),RMSE_fcst_year[leading:xlen:3],color='blue',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
 plt.plot(RMSE_fcst_year,color='blue',label='L0-2')
-plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='blue')
+plt.text(xlen,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='blue')
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_SH[year-2011,1,:])
 for leading in np.arange(0,3):
-    plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='orange',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
+    plt.plot(np.arange(leading,xlen,3),RMSE_fcst_year[leading:xlen:3],color='orange',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
 plt.plot(RMSE_fcst_year,color='orange',label='L3-5')
-plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='orange')
+plt.text(xlen,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='orange')
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_SH[year-2011,2,:])
 for leading in np.arange(0,3):
-    plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='green',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
+    plt.plot(np.arange(leading,xlen,3),RMSE_fcst_year[leading:xlen:3],color='green',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
 plt.plot(RMSE_fcst_year,color='green',label='L6-8')
-plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='green')
+plt.text(xlen,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='green')
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_SH[year-2011,3,:])
 for leading in np.arange(0,3):
-    plt.plot(np.arange(leading,108,3),RMSE_fcst_year[leading:108:3],color='red',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
+    plt.plot(np.arange(leading,xlen,3),RMSE_fcst_year[leading:xlen:3],color='red',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
 plt.plot(RMSE_fcst_year,color='red',label='L9-11')
-plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='red')
+plt.text(xlen,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='red')
 #print(np.mean(RMSE_fcst_year))
 
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_osisaf_cim_SH[year-2011,:])
 plt.plot(RMSE_fcst_year,color='k',label='OSI SAF')
-plt.text(108,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='k')
+plt.text(xlen,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year),2),color='k')
 #print(np.mean(RMSE_fcst_year))
 
-plt.xticks(np.arange(0,108,12),np.arange(2011,2020,1))
+plt.xticks(np.arange(0,xlen,12),np.arange(2011,2020,1))
 plt.yticks(np.round(np.arange(0.08,0.3,0.05),2),np.round(np.arange(0.08,0.3,0.05),2))
 plt.ylabel('RMSE of sea ice concentration')
 plt.title('Antarctic')
