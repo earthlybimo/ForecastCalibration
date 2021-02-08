@@ -248,7 +248,7 @@ for g in np.arange(Grdlen):
     # rawFcstCRPSS[g] = crps_x_t
     # calFcstCRPSS[g] = crps_x_t_cal
 
-    obsMeanSIC[g]=truobs[g]
+    obsMeanSIC[g]=Y_t
     rawMeanSIC2[g]=np.trapz(1 - cdf_x_t, x)
     calMeanSIC[g]=np.trapz(1 - cdf_x_t_cal, x)
     del taqminst
