@@ -17,6 +17,7 @@ for targetyear in np.arange(2011,(2019+1)):
     for whichinit in np.arange(1,5):
         for leadtimeMonth in np.arange(1,13):
             filename = data_path+'Forecast_Calibration_TrustSharpFalse_wMeanConc_Yr'+str(targetyear)+'_'+str(whichinit).zfill(2)+'Mn_'+str(leadtimeMonth).zfill(2)+'.nc'
+            print(filename)
             fileconcMean=Dataset(filename)
             calMeanSIC=fileconcMean.variables['SIC_Cal'][:]
             rawMeanSIC=fileconcMean.variables['SIC_RAW'][:]
