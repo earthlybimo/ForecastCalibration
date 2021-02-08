@@ -63,9 +63,12 @@ for EM in np.arange(EMlen):
 ## Observation for the date already exists?
 truobsfile=('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(obsTyr)+'.nc')
 ## Could add a file exists check here. In our test cases, all files exists already.
-file_osisaf = Dataset(truobsfile)
-truobs=file_osisaf.variables['obs'][obsTmnth-1,:]
-file_osisaf.close()
+if not os.path.isfile(truobsfile):
+    truobs=np.NaN
+else:
+    file_osisaf = Dataset(truobsfile)
+    truobs=file_osisaf.variables['obs'][obsTmnth-1,:]
+    file_osisaf.close()
 
 
 ## Let's save Historical Forecast
