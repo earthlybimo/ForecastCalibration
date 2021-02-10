@@ -96,8 +96,8 @@ for year in np.arange(2011,2018+1):
     file_fcst.close()
     mon=3 #
     for mon in np.arange(1,12+1):
-        for lead in np.arange(1,5):
-            obsTmnth = mon+strtm[lead-1]-1
+        for lead in np.arange(0,4):
+            obsTmnth = mon+strtm[lead]-1
             obsTyr=year
             if (obsTmnth>12):
                 obsTyr=obsTyr+1
