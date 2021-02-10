@@ -24,9 +24,9 @@ inYR=2011:2018  #which year
 strtm = c(1, 4, 7, 10)  # which is the starting month for each initialisation
 
 rawNHarr=array(dim=c(length(inYR),4,12))
-rawSHarr=rawOarr
-calNHarr=rawOarr
-calSHarr=rawUarr
+rawSHarr=rawNHarr
+calNHarr=rawNHarr
+calSHarr=rawNHarr
 
 for(yy in 1:length(inYR)){
   for(init in 1:4){
