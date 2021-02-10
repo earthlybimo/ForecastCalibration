@@ -60,15 +60,19 @@ for(yy in 1:length(inYR)){
       # obsSIP2=ncvar_get(fl,"SIP_FCST_OBS")
       nc_close(fl)
 
-      
       temp=(obsSIC-rawSIC)
-      temp[abs(temp)>1]=NA
-      rawNHarr[yy,init,mm]=sqrt(sum(temp[NHgrdpts],na.rm = T)/sum(area[NHgrdpts],na.rm = T))
-      rawSHarr[yy,init,mm]=sqrt(sum(temp[SHgrdpts],na.rm = T)/sum(area[SHgrdpts],na.rm = T))
+      temp[abs(temp)=0]=NA;temp[abs(temp)>1]=NA  
+      area2=area;area2[abs(temp)>1]=NA
+      temp2=temp*area2
+      rawNHarr[yy,init,mm]=sqrt(sum(temp2[NHgrdpts],na.rm = T)/sum(area2[NHgrdpts],na.rm = T))
+      rawSHarr[yy,init,mm]=sqrt(sum(temp2[SHgrdpts],na.rm = T)/sum(area2[SHgrdpts],na.rm = T))
     
-      temp=(obsSIC-calSIC);temp[abs(temp)>1]=NA  
-      calNHarr[yy,init,mm]=sqrt(sum(temp[NHgrdpts],na.rm = T)/sum(area[NHgrdpts],na.rm = T))
-      calSHarr[yy,init,mm]=sqrt(sum(temp[SHgrdpts],na.rm = T)/sum(area[SHgrdpts],na.rm = T))
+      temp=(obsSIC-calSIC);
+      temp[abs(temp)=0]=NA;temp[abs(temp)>1]=NA  
+      area2=area;area2[abs(temp)>1]=NA
+      temp2=temp*area2
+      calNHarr[yy,init,mm]=sqrt(sum(temp2[NHgrdpts],na.rm = T)/sum(area2[NHgrdpts],na.rm = T))
+      calSHarr[yy,init,mm]=sqrt(sum(temp2[SHgrdpts],na.rm = T)/sum(area2[SHgrdpts],na.rm = T))
     
       
     }
@@ -80,3 +84,8 @@ save(file = Allsavename,version = 2,grd,rawSHarr,rawNHarr,inYR,calSHarr,calNHarr
 file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)))
 print("Done!")
 
+
+
+##
+
+# load("~/Documents/Data/BiasCorrection/TAQM/EstMeanConc_RMSE_Results")
