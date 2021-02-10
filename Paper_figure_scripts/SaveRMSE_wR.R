@@ -60,14 +60,14 @@ for(yy in 1:length(inYR)){
       # obsSIP2=ncvar_get(fl,"SIP_FCST_OBS")
       nc_close(fl)
 
-      temp=(obsSIC-rawSIC)
+      temp=(obsSIC-rawSIC)^2
       temp[abs(temp)==0]=NA;temp[abs(temp)>1]=NA  
       area2=area;area2[abs(temp)>1]=NA
       temp2=temp*area2
       rawNHarr[yy,init,mm]=sqrt(sum(temp2[NHgrdpts],na.rm = T)/sum(area2[NHgrdpts],na.rm = T))
       rawSHarr[yy,init,mm]=sqrt(sum(temp2[SHgrdpts],na.rm = T)/sum(area2[SHgrdpts],na.rm = T))
     
-      temp=(obsSIC-calSIC);
+      temp=(obsSIC-calSIC)^2
       temp[abs(temp)==0]=NA;temp[abs(temp)>1]=NA  
       area2=area;area2[abs(temp)>1]=NA
       temp2=temp*area2
