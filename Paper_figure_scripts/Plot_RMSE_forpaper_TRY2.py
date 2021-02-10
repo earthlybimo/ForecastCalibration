@@ -45,8 +45,8 @@ mesh_area_file.close()
 # mesh=pf.load_mesh(meshpath, abg=[50, 15, -90], usepickle=False)
 
 #Could be something like this?
-nod_NH= (mesh_lat>0.0)
-nod_SH= (mesh_lat<0.0)
+nod_NH= (mesh_lat>30.0)
+nod_SH= (mesh_lat<-30.0)
 
 # osisaf climatology
 RMSE_osisaf_cim_NH=np.zeros((2018-2011+1,12))
@@ -104,7 +104,7 @@ for year in np.arange(2011,2018+1):
                 obsTmnth=obsTmnth-12
             ## Observation for the date already exists?
             truobsfile=('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(obsTyr)+'.nc')
-            ## Could add a file exists check here. In our test cases, all files exists already.
+            ## Could add a file exists check here.
             file_osisaf = Dataset(truobsfile)
             truobs=file_osisaf.variables['obs'][obsTmnth-1,:]
             file_osisaf.close()
