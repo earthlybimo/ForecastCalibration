@@ -129,7 +129,7 @@ plt.figure(figsize=(10,7))
 plt.subplot(211)
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
-    for leading in np.arange(0,3):
+    for leading in np.arange(0,4):
         RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,leading,0:3])
 for leading in np.arange(0,3):
     plt.plot(np.arange(leading,xlen,3),RMSE_fcst_year[leading:xlen:3],color='blue',marker=marker,markersize=markersize[leading],alpha=0.5,markeredgecolor='None',linestyle='')
@@ -139,7 +139,7 @@ plt.text(-4,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year)
 
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
-    for leading in np.arange(0,3):
+    for leading in np.arange(0,4):
         RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,leading,3:6])
     # RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,1,:])
 for leading in np.arange(0,3):
@@ -150,7 +150,7 @@ plt.text(-4,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_year)
 
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
-    for leading in np.arange(0,3):
+    for leading in np.arange(0,4):
         RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,leading,6:9])
     # RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,2,:])
 for leading in np.arange(0,3):
@@ -161,7 +161,7 @@ plt.text(xlen,np.round(np.mean(RMSE_fcst_year),2),np.round(np.mean(RMSE_fcst_yea
 
 RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
-    for leading in np.arange(0,3):
+    for leading in np.arange(0,4):
         RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,leading,9:12])
     # RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_NH[year-2011,3,:])
 for leading in np.arange(0,3):
