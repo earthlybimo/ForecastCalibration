@@ -88,7 +88,7 @@ for f in np.arange((Dims[0]-1)): #Along time, starting from initial day to final
     concNC.close()
     targetObs[f,:,:]=sat_ci
 
-
+targetObs=targetObs/100
 
 histObs=np.empty((len(histYrs),Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
 for c,year in  enumerate(histYrs):
@@ -206,11 +206,11 @@ for lt in np.arange((Dims[0]-1)):
             cdf_obs[Y_t*np.ones(len(x)) <= x] = 1.0
             # CRPS for the raw forecast
             crps_x_t = np.trapz((cdf_x_t - cdf_obs)**2., x)
-            print (crps_x_t)
+            # print (crps_x_t)
             # >>> 0.0277481871254
             # CRPS for the calibrated forecast
             crps_x_t_cal = np.trapz((cdf_x_t_cal - cdf_obs)**2., x)
-            print (crps_x_t_cal)
+            # print (crps_x_t_cal)
             del taqminst
 
             calFcst[lt,i,j]=sip_x_t_cal
