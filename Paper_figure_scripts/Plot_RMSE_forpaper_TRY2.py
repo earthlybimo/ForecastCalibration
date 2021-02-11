@@ -183,6 +183,7 @@ plt.ylabel('RMSE of sea ice concentration')
 plt.title('Arctic')
 
 plt.subplot(212)
+RMSE_fcst_year = []
 for year in np.arange(2011,2018+1):
     for leading in np.arange(0,4):
         RMSE_fcst_year = np.append(RMSE_fcst_year, RMSE_fcst_SH[year-2011,leading,0:3])
