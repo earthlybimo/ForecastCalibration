@@ -89,6 +89,7 @@ for f in np.arange((Dims[0]-1)): #Along time, starting from initial day to final
     targetObs[f,:,:]=sat_ci
 
 targetObs=targetObs/100
+targetObs[targetObs<0]=np.nan
 
 histObs=np.empty((len(histYrs),Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
 for c,year in  enumerate(histYrs):
@@ -105,6 +106,7 @@ for c,year in  enumerate(histYrs):
 
 
 histObs=histObs/100
+histObs[histObs<0]=np.nan
 print("Input done, now calibrating")
 
 ## Grid loops should be here:
@@ -119,6 +121,8 @@ for lt in np.arange((Dims[0]-1)):
             taqminst = taqm()
             tau_t=histYrs
             t=targetyear
+            if all(np.isnan(Y)):
+                continue
 
             pval_x = linregress(tau_t,X.mean(axis=1))[3]  #check the p-value for MH trend over tau_t
             if pval_x<0.05:
@@ -218,7 +222,7 @@ for lt in np.arange((Dims[0]-1)):
 
 ### the part where I try to save the calibrated forecasts:
 
-filename = save_path+'TAQM_calibrated_'+os.path.basename(file2)
+filename = save_path+'TAQM_calibrated_NAremoved_'+os.path.basename(file2)
 ncfile = Dataset(filename, 'w', format='NETCDF4_CLASSIC')
 # create dimensions
 ncfile.createDimension('time',Dims[0])
