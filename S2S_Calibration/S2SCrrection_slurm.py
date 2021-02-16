@@ -32,7 +32,7 @@ if not(os.path.isdir(save_path)):
 targetyear = 2005;initMonth=5
 ## Actually now we can make this into a sys arg so we can run a slurm loop
 targetyear = int(sys.argv[1])
-initMont=int(sys.argv[2])
+initMonth=int(sys.argv[2])
 
 histYrs=np.arange(1999,targetyear)  # Now let's include all years until target within hist
 
@@ -56,7 +56,11 @@ calFcst=np.empty((Dims[0],Dims[2],Dims[3]))
 rawSIP=calFcst.copy()
 obsSIP=calFcst.copy()
 
+filename = save_path+'TAQM_calibrated_'+os.path.basename(file2)
+if (os.path.isfile(filename())):
+    sys.exit((" File: "+ filename+ " already exists!"))
 
+#
 histFcst=np.empty((len(histYrs),Dims[0],(Dims[1]),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
 ## Or If we wish to include the control runs as well
 histFcst=np.empty((len(histYrs),Dims[0],(Dims[1]+1),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
