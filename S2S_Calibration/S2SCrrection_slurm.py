@@ -57,7 +57,7 @@ rawSIP=calFcst.copy()
 obsSIP=calFcst.copy()
 
 filename = save_path+'TAQM_calibrated_'+os.path.basename(file2)
-if (os.path.isfile(filename())):
+if (os.path.isfile(filename)):
     sys.exit((" File: "+ filename+ " already exists!"))
 
 #
