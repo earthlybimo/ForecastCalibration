@@ -24,8 +24,8 @@ for (i in 1:length(Nodeareas)){
 }
 
 ## Where to save the SPS values?
-calSPSarr[yy,mm,i]=array(dim=c(length(ylist),12,flen))
-
+calSPSarr=array(dim=c(length(ylist),12,flen))
+rawSPSarr=calSPSarr
 for(yy in 1:length(ylist)){
   for(mm in 1:12){
     file1=Sys.glob(sprintf("%s%s/TAQM_calibrated_*%d-%0.2d-??.nc",data_path,modelname,ylist[yy],mm))
