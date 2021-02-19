@@ -108,18 +108,16 @@ for year in np.arange(2011,2019+1):
                 obsTyr=obsTyr+1
                 obsTmnth=obsTmnth-12
 
-            ## Not sure what anomaly means, is it anomaly against obs or anomaly against clima?
+            truobsfile=('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(obsTyr)+'.nc')
+            ## Could add a file exists check here.
+            file_osisaf = Dataset(truobsfile)
+            truobs=file_osisaf.variables['obs'][obsTmnth-1,:]
+            file_osisaf.close()
+            diff = (fcst[lead,mon-1,:] - truobs)
 
-            # truobsfile=('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(obsTyr)+'.nc')
-            # ## Could add a file exists check here.
-            # file_osisaf = Dataset(truobsfile)
-            # truobs=file_osisaf.variables['obs'][obsTmnth-1,:]
-            # file_osisaf.close()
-            # diff = (fcst[lead,mon-1,:] - truobs)
-
-
-            osisaf_clim=file_osisaf_clim.variables['obs'][obsTmnth-1,:]
-            diff = (fcst[lead,mon-1,:] - osisaf_clim)
+            ## In Longjiang's scripts, it seems like anomaly is defined against climatology?
+            # osisaf_clim=file_osisaf_clim.variables['obs'][obsTmnth-1,:]
+            # diff = (fcst[lead,mon-1,:] - osisaf_clim)
 
             fcst_anomAREA = diff * mesh_area
 
@@ -270,4 +268,6 @@ plt.title('Antarctic')
 plt.xlim([-6,114])
 plt.tight_layout()
 
-plt.savefig((Fig_path+'SIC_AnomalyPosandNeg.png'),dpi=300)
+Figname=(Fig_path+'SIC_BiasAreaPosandNeg.png')
+plt.savefig(Figname,dpi=300)
+print("Saved file: "+Fig_path+os.path.basename(Figname))
