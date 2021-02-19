@@ -61,7 +61,7 @@ months = 0
 data_path='/work/ba1138/a270112/awicm3/FCST_CLIM/'
 file_osisaf_clim=Dataset(data_path+'OSISAF_MON_CLIM.nc')
 
-for year in np.arange(2011,2018+1):
+for year in np.arange(2011,2019+1):
     yr=str(year-2000)       # current year
     lyr=str(year-1-2000)    # last year
     file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(year)+'.nc')
@@ -91,7 +91,7 @@ file_osisaf_clim.close()
 strtm = (1, 4, 7, 10)  # which is the starting month for each initialisation
 months = -1
 file_osisaf_clim=Dataset(data_path+'OSISAF_MON_CLIM.nc')
-for year in np.arange(2011,2018+1):
+for year in np.arange(2011,2019+1):
     yr=str(year-2000)       # current year
 
     file_fcst = Dataset(save_path+'F'+yr+'_ens_mon_mean_corr.nc')
@@ -108,16 +108,16 @@ for year in np.arange(2011,2018+1):
                 obsTyr=obsTyr+1
                 obsTmnth=obsTmnth-12
 
-            truobsfile=('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(obsTyr)+'.nc')
-            ## Could add a file exists check here.
-            file_osisaf = Dataset(truobsfile)
-            truobs=file_osisaf.variables['obs'][obsTmnth-1,:]
-            file_osisaf.close()
-            diff = (fcst[lead,mon-1,:] - truobs)
+            # truobsfile=('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(obsTyr)+'.nc')
+            # ## Could add a file exists check here.
+            # file_osisaf = Dataset(truobsfile)
+            # truobs=file_osisaf.variables['obs'][obsTmnth-1,:]
+            # file_osisaf.close()
+            # diff = (fcst[lead,mon-1,:] - truobs)
 
             ## In Longjiang's scripts, it seems like anomaly is defined against climatology?
-            # osisaf_clim=file_osisaf_clim.variables['obs'][obsTmnth-1,:]
-            # diff = (fcst[lead,mon-1,:] - osisaf_clim)
+            osisaf_clim=file_osisaf_clim.variables['obs'][obsTmnth-1,:]
+            diff = (fcst[lead,mon-1,:] - osisaf_clim)
 
             fcst_anomAREA = diff * mesh_area
 
@@ -268,6 +268,6 @@ plt.title('Antarctic')
 plt.xlim([-6,114])
 plt.tight_layout()
 
-Figname=(Fig_path+'SIC_BiasAreaPosandNeg.png')
+Figname=(Fig_path+'SIC_AnomalyAreaPosandNeg.png')
 plt.savefig(Figname,dpi=300)
 print("Saved file: "+Fig_path+os.path.basename(Figname))
