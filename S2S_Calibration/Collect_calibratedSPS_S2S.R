@@ -59,6 +59,23 @@ for(yy in 1:length(ylist)){
   }
 }
 
-save(file = save_name,version = 2, calSPSarr,rawSPSarr,ylist)
+calMean=colMeans(calSPSarr)
+rawMean=colMeans(rawSPSarr)
+Fctr=((6371^2)/1000000)
+
+
+
+save(file = save_name,version = 2, calSPSarr,rawSPSarr,ylist,calMean,rawMean,Fctr)
 print(paste0("File saved:",save_name))
+
+
+cols=rainbow(12)
+plot(-1,-1,xlim=c(1,46),ylim=c(0,2),ylab="SPS (mill sq km)",xlab="Leadtime (days)")
+
+for(i in seq(1,12,2)){
+  lines(rawMean[i,1:45]*Fctr,col=cols[i],lty=1)
+  lines(calMean[i,1:45]*Fctr,col=cols[i],lty=2)
+}
+legend("topleft",legend = month.abb[seq(1,12,2)],col = cols[seq(1,12,2)],lty=3)
+
 
