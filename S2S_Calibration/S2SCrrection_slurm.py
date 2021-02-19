@@ -29,7 +29,7 @@ if not(os.path.isdir(save_path)):
 
 # # Which year are we targetting? And what month?
 # python filenam.py 2015 1
-targetyear = 2005;initMonth=5
+# targetyear = 2005;initMonth=5
 ## Actually now we can make this into a sys arg so we can run a slurm loop
 targetyear = int(sys.argv[1])
 initMonth=int(sys.argv[2])
@@ -43,7 +43,8 @@ ci_cont=concNC.variables['ci'][:]
 concNC.close()
 
 file2=file1.replace("cont", "pert")
-# os.path.isfile(file2)  DO THIS CHECK LATER!
+if not(os.path.isfile(file2)):
+    sys.exit((" Pert file: "+ file2+ " does not exist!"))
 concNC=Dataset(file2)
 ci_pert=concNC.variables['ci'][:]
 concNC.close()
@@ -86,7 +87,7 @@ temp=file1.find(".nc")
 datetemp=(file1[(temp-2):temp])
 initdate=date(targetyear,initMonth,int(datetemp))
 targetObs=np.empty((Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
-for f in np.arange((Dims[0]-1)): #Along time, starting from initial day to final day
+for f in np.arange((Dims[0])): #Along time, starting from initial day to final day
     trgtdate=initdate+timedelta(int(f))
     satfile=(sat_folder+"/ice_conc_"+HEM+"_ease-125_reproc_"+trgtdate.strftime("%Y%m%d")+"1200.nc4")
     if not(os.path.isfile(satfile)):
@@ -119,10 +120,10 @@ print("Input done, now calibrating")
 
 ## Grid loops should be here:
 i=1;j=1;lt=1
-for lt in np.arange((Dims[0]-1)):
+for lt in np.arange((Dims[0])):
     print("Leadtime: "+str(lt))
-    for i in np.arange((Dims[2]-1)):
-        for j in np.arange((Dims[3]-1)):
+    for i in np.arange((Dims[2])):
+        for j in np.arange((Dims[3])):
 
             X=histFcst[:,lt,:,i,j]
             Y=histObs[:,lt,i,j]
