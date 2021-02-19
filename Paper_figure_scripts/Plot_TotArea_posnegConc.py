@@ -61,7 +61,7 @@ months = 0
 data_path='/work/ba1138/a270112/awicm3/FCST_CLIM/'
 file_osisaf_clim=Dataset(data_path+'OSISAF_MON_CLIM.nc')
 
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     yr=str(year-2000)       # current year
     lyr=str(year-1-2000)    # last year
     file_osisaf = Dataset('/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_'+str(year)+'.nc')
@@ -91,7 +91,7 @@ file_osisaf_clim.close()
 strtm = (1, 4, 7, 10)  # which is the starting month for each initialisation
 months = -1
 file_osisaf_clim=Dataset(data_path+'OSISAF_MON_CLIM.nc')
-for year in np.arange(2011,2019+1):
+for year in np.arange(2011,2018+1):
     yr=str(year-2000)       # current year
 
     file_fcst = Dataset(save_path+'F'+yr+'_ens_mon_mean_corr.nc')
