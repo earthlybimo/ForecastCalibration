@@ -20,7 +20,7 @@ HEM="nh"
 datasource = "/mnt/lustre01/work/ab0995/a270099/S2S/"  # In Lorenzos' side
 sat_folder=datasource+"satellite_interp"
 
-model_name="KMA"
+model_name="ECMWF"
 model_path=datasource+"forecasts/"+model_name+"/"
 save_path = '/work/ba1138/a270138/BiasCorrOutput/S2S_Results/'+model_name+"/"
 if not(os.path.isdir(save_path)):
