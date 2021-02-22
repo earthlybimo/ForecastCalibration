@@ -2,7 +2,7 @@ library(ncdf4);library(spheRlab)
 
 
 data_path = '/work/ba1138/a270138/BiasCorrOutput/S2S_Results/'
-modelname="ECMWF";flen=46
+modelname="KMA";flen=60
 ylist=2005:2010
 save_name=paste0(data_path,"CollectedCalibratedSPS_for_",modelname)
 
@@ -77,5 +77,27 @@ for(i in seq(1,12,2)){
   lines(calMean[i,1:45]*Fctr,col=cols[i],lty=2)
 }
 legend("topleft",legend = month.abb[seq(1,12,2)],col = cols[seq(1,12,2)],lty=3)
+
+dev.off()
+
+
+# load("~/Documents/Data/BiasCorrection/S2S_calibration/CollectedCalibratedSPS_for_ECMWF")
+# 
+# 
+# plot(as.Date("2004-01-01"),0,xlim=as.Date(c("2008-01-01","2010-01-02")),ylim=c(0,2),ylab="SPS (mill sq km)",xlab="")
+# yy=1;mm=2
+# 
+# for(yy in 1:6){
+#   for(mm in seq(1,12,2)){
+#     lines((as.Date(sprintf("%d-%0.2d-01",ylist[yy],mm))+(0:45)),rawSPSarr[yy,mm,1:46]*Fctr,col=cols[mm],lty=1)
+#     lines((as.Date(sprintf("%d-%0.2d-01",ylist[yy],mm))+(0:45)),calSPSarr[yy,mm,1:46]*Fctr,col=cols[mm],lty=2)}
+# }
+# 
+# 
+
+
+
+
+
 
 
