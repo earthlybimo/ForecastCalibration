@@ -11,31 +11,37 @@ HEM="nh"
 if(HEM=="nh"){
   maskfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output/Newmask"  
   Gridfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output/GridandNApoints"
+  OGsource="/mnt/lustre01/work/ab0995/a270099/S2S/"
 }
 
 if(HEM=="sh"){
   outputdir="/mnt/lustre01/work/ab0995/a270138/S2S_Output_south/Newmask" 
   Gridfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output_south/GridandNApoints"
+  OGsource="/mnt/lustre01/work/ab0995/a270099/S2S_south/"
 }
 
-load(maskfile)
-
+load(maskfile);mask=as.vector(mask)
+cellareafile=paste0(OGsource,"mask_weight/area.nc")
+fl=nc_open(cellareafile)
+cellarea=ncvar_get(fl,'cell_area')
+nc_close(fl)
+cellarea=as.vector(cellarea)
 ## Find the grid areas
 # Gridfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output/GridandNApoints"
 load(Gridfile,envir =(GridEnv=new.env()))
 grd=GridEnv$grd.full
-Elementareas=array(dim=dim(grd$elem)[[1]])
-for (i in 1:length(Elementareas)){
-  nodes=grd$elem[i,]   #What nodes does this element have?
-  Elementareas[i]=sl.triag.area(grd$lon[nodes],grd$lat[nodes]) #And how much is the weight here?
-}
-Nodeareas=array(dim=length(grd$lon))
-for (i in 1:length(Nodeareas)){
-  elems=grd$neighelems[i,]  #Most nodes have upto 6 elements around it, 
-  areaofelems=Elementareas[elems]
-  areaofelems=areaofelems[!is.na(areaofelems)]  #but some have less than 6, so some of those points could be NA
-  Nodeareas[i]=sum(areaofelems)*(1/3)  #Each element area is shared by 3 nodes, and nodes get shares from all the elements its part of.
-}
+# Elementareas=array(dim=dim(grd$elem)[[1]])
+# for (i in 1:length(Elementareas)){
+#   nodes=grd$elem[i,]   #What nodes does this element have?
+#   Elementareas[i]=sl.triag.area(grd$lon[nodes],grd$lat[nodes]) #And how much is the weight here?
+# }
+# Nodeareas=array(dim=length(grd$lon))
+# for (i in 1:length(Nodeareas)){
+#   elems=grd$neighelems[i,]  #Most nodes have upto 6 elements around it,
+#   areaofelems=Elementareas[elems]
+#   areaofelems=areaofelems[!is.na(areaofelems)]  #but some have less than 6, so some of those points could be NA
+#   Nodeareas[i]=sum(areaofelems)*(1/3)  #Each element area is shared by 3 nodes, and nodes get shares from all the elements its part of.
+# }
 
 ## Where to save the SPS values?
 calSPSarr=array(dim=c(length(ylist),12,flen))
@@ -62,11 +68,11 @@ for(yy in 1:length(ylist)){
     # Now calculate the SPS
     for (i in 1:flen) {
       temp=as.vector(CalSIP[,,i]-ObsSIP[,,i])
-      temp2=(temp^2)*Nodeareas*as.vector(mask)
+      temp2=(temp^2)*cellarea*(mask)
       calSPSarr[yy,mm,i]=sum(temp2,na.rm = T)
       remove(temp,temp2)
       temp=as.vector(RawSIP[,,i]-ObsSIP[,,i])
-      temp2=(temp^2)*Nodeareas*as.vector(mask)
+      temp2=(temp^2)*cellarea*(mask)
       rawSPSarr[yy,mm,i]=sum(temp2,na.rm = T)
       remove(temp,temp2)
     }
