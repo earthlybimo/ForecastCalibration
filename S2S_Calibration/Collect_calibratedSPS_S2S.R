@@ -2,7 +2,7 @@ library(ncdf4);library(spheRlab)
 
 
 data_path = '/work/ba1138/a270138/BiasCorrOutput/S2S_Results/'
-modelname="KMA";flen=60
+modelname="ECMWF";flen=46
 ylist=2005:2010
 save_name=paste0(data_path,"CollectedCalibratedSPS_for_",modelname)
 
