@@ -101,7 +101,7 @@ for f in np.arange((Dims[0])): #Along time, starting from initial day to final d
 targetObs=targetObs/100
 targetObs[targetObs<0]=np.nan
 
-histObs=np.ma.empty((len(histYrs),Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
+histObs=np.empty((len(histYrs),Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
 for c,year in  enumerate(histYrs):
     initdate=date(year,initMonth,int(datetemp))
     for f in np.arange((Dims[0])): #Along time, starting from initial day to final day
@@ -144,11 +144,11 @@ for lt in np.arange((Dims[0])):
             if pval_x<0.05:
                 # if significant, then adjust MH for the trend to create TAMH
                 X_ta = taqminst.trend_adjust_1p(X,tau_t,t)
+                X_ta=X_ta.compressed()
             else:
                 # else, set TAMH equal to MH (i.e. don't perform the trend adjustment)
                 X_ta = np.copy(X)
 
-            X_ta=X_ta.compressed()
             pval_y = linregress(tau_t,Y)[3]     #check p-value for OH trend over tau_t
             if pval_y<0.05:
                 # if significant, then adjust OH for the trend to create TAOH
@@ -156,7 +156,7 @@ for lt in np.arange((Dims[0])):
             else:
                 # else, set TAOH equal to OH (i.e. don't perform the trend adjustment)
                 Y_ta = np.copy(Y)
-            Y_ta=Y_ta.compressed()
+            #
             X_ta_params, Y_ta_params, X_t_params = taqminst.fit_params(X_ta,Y_ta,X_t)
 
             # Now calibrate the forecast ensemble using the calibrate() method:
