@@ -49,11 +49,11 @@ concNC=Dataset(file2)
 ci_pert=concNC.variables['ci'][:]
 concNC.close()
 Dims=ci_pert.shape
-rawFcst=np.empty((Dims[0],(Dims[1]+1),Dims[2],Dims[3]))  #  Leadtime, EMno, i, j
+rawFcst=np.ma.empty((Dims[0],(Dims[1]+1),Dims[2],Dims[3]))  #  Leadtime, EMno, i, j
 rawFcst[:,0:Dims[1],:,:]=ci_pert.copy()
 rawFcst[:,Dims[1],:,:]=ci_cont.copy()
 
-calFcst=np.empty((Dims[0],Dims[2],Dims[3]))
+calFcst=np.ma.empty((Dims[0],Dims[2],Dims[3]))
 rawSIP=calFcst.copy()
 obsSIP=calFcst.copy()
 
@@ -62,9 +62,9 @@ if (os.path.isfile(filename)):
     sys.exit((" File: "+ filename+ " already exists!"))
 
 #
-histFcst=np.empty((len(histYrs),Dims[0],(Dims[1]),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
+histFcst=np.ma.empty((len(histYrs),Dims[0],(Dims[1]),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
 ## Or If we wish to include the control runs as well
-histFcst=np.empty((len(histYrs),Dims[0],(Dims[1]+1),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
+histFcst=np.ma.empty((len(histYrs),Dims[0],(Dims[1]+1),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
 
 for c,year in  enumerate(histYrs):
     file3=file2.replace(str(targetyear), str(year))
@@ -80,13 +80,14 @@ for c,year in  enumerate(histYrs):
     concNC=Dataset(file4)
     ci_cont=concNC.variables['ci'][:]
     concNC.close()
-    histFcst[c,:,0:Dims[1],:,:]=ci_pert;histFcst[c,:,Dims[1],:,:]=ci_cont;
+    histFcst[c,:,0:Dims[1],:,:]=ci_pert
+    histFcst[c,:,Dims[1],:,:]=ci_cont;
 
 
 temp=file1.find(".nc")
 datetemp=(file1[(temp-2):temp])
 initdate=date(targetyear,initMonth,int(datetemp))
-targetObs=np.empty((Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
+targetObs=np.ma.empty((Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
 for f in np.arange((Dims[0])): #Along time, starting from initial day to final day
     trgtdate=initdate+timedelta(int(f))
     satfile=(sat_folder+"/ice_conc_"+HEM+"_ease-125_reproc_"+trgtdate.strftime("%Y%m%d")+"1200.nc4")
@@ -100,7 +101,7 @@ for f in np.arange((Dims[0])): #Along time, starting from initial day to final d
 targetObs=targetObs/100
 targetObs[targetObs<0]=np.nan
 
-histObs=np.empty((len(histYrs),Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
+histObs=np.ma.empty((len(histYrs),Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
 for c,year in  enumerate(histYrs):
     initdate=date(year,initMonth,int(datetemp))
     for f in np.arange((Dims[0])): #Along time, starting from initial day to final day
@@ -128,16 +129,17 @@ for lt in np.arange((Dims[0])):
             X=histFcst[:,lt,:,i,j]
             Y=histObs[:,lt,i,j]
             X_t=rawFcst[lt,:,i,j]
+            x2=np.ma.empty_like(X_t)
+            x2[X_t>=0.15]=1
+            if all(np.isnan(x2)):
+                continue
+            if all(np.isnan(Y)):
+                continue
+                
             taqminst = taqm()
             tau_t=histYrs
             t=targetyear
-            x2=np.zeros(X_t.size)
-            x2[X_t>0]=1
-            rawSIP[lt,i,j]=np.nanmean(x2)
-
-            if all(np.isnan(Y)):
-                continue
-
+            rawSIP[lt,i,j]=np.ma.mean(x2)
             pval_x = linregress(tau_t,X.mean(axis=1))[3]  #check the p-value for MH trend over tau_t
             if pval_x<0.05:
                 # if significant, then adjust MH for the trend to create TAMH
