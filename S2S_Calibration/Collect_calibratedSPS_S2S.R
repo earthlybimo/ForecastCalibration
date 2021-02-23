@@ -4,10 +4,24 @@ library(ncdf4);library(spheRlab)
 data_path = '/work/ba1138/a270138/BiasCorrOutput/S2S_Results/'
 modelname="ECMWF";flen=46
 ylist=2005:2010
-save_name=paste0(data_path,"CollectedCalibratedSPS_for_",modelname)
+save_name=paste0(data_path,"CollectedCalibratedSPS_for_",modelname,"_wMask")
+
+HEM="nh"
+
+if(HEM=="nh"){
+  maskfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output/Newmask"  
+  Gridfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output/GridandNApoints"
+}
+
+if(HEM=="sh"){
+  outputdir="/mnt/lustre01/work/ab0995/a270138/S2S_Output_south/Newmask" 
+  Gridfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output_south/GridandNApoints"
+}
+
+load(maskfile)
 
 ## Find the grid areas
-Gridfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output/GridandNApoints"
+# Gridfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output/GridandNApoints"
 load(Gridfile,envir =(GridEnv=new.env()))
 grd=GridEnv$grd.full
 Elementareas=array(dim=dim(grd$elem)[[1]])
@@ -48,11 +62,11 @@ for(yy in 1:length(ylist)){
     # Now calculate the SPS
     for (i in 1:flen) {
       temp=as.vector(CalSIP[,,i]-ObsSIP[,,i])
-      temp2=(temp^2)*Nodeareas
+      temp2=(temp^2)*Nodeareas*as.vector(mask)
       calSPSarr[yy,mm,i]=sum(temp2,na.rm = T)
       remove(temp,temp2)
       temp=as.vector(RawSIP[,,i]-ObsSIP[,,i])
-      temp2=(temp^2)*Nodeareas
+      temp2=(temp^2)*Nodeareas*as.vector(mask)
       rawSPSarr[yy,mm,i]=sum(temp2,na.rm = T)
       remove(temp,temp2)
     }
@@ -67,34 +81,6 @@ Fctr=((6371^2)/1000000)
 
 save(file = save_name,version = 2, calSPSarr,rawSPSarr,ylist,calMean,rawMean,Fctr,flen)
 print(paste0("File saved:",save_name))
-
-
-cols=rainbow(12)
-plot(-1,-1,xlim=c(1,46),ylim=c(0,2),ylab="SPS (mill sq km)",xlab="Leadtime (days)")
-
-for(i in seq(1,12,2)){
-  lines(rawMean[i,1:45]*Fctr,col=cols[i],lty=1)
-  lines(calMean[i,1:45]*Fctr,col=cols[i],lty=2)
-}
-legend("topleft",legend = month.abb[seq(1,12,2)],col = cols[seq(1,12,2)],lty=3)
-
-dev.off()
-
-
-# load("~/Documents/Data/BiasCorrection/S2S_calibration/CollectedCalibratedSPS_for_ECMWF")
-# 
-# 
-# plot(as.Date("2004-01-01"),0,xlim=as.Date(c("2008-01-01","2010-01-02")),ylim=c(0,2),ylab="SPS (mill sq km)",xlab="")
-# yy=1;mm=2
-# 
-# for(yy in 1:6){
-#   for(mm in seq(1,12,2)){
-#     lines((as.Date(sprintf("%d-%0.2d-01",ylist[yy],mm))+(0:45)),rawSPSarr[yy,mm,1:46]*Fctr,col=cols[mm],lty=1)
-#     lines((as.Date(sprintf("%d-%0.2d-01",ylist[yy],mm))+(0:45)),calSPSarr[yy,mm,1:46]*Fctr,col=cols[mm],lty=2)}
-# }
-# 
-# 
-
 
 
 
