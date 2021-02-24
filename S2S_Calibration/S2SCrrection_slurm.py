@@ -121,7 +121,7 @@ print("Input done, now calibrating")
 
 ## Grid loops should be here:
 i=1;j=1;lt=1
-for lt in np.arange(4):#(Dims[0])):
+for lt in np.arange(2):#(Dims[0])):
     print("Leadtime: "+str(lt))
     for i in np.arange((Dims[2])):
         for j in np.arange((Dims[3])):
@@ -133,8 +133,12 @@ for lt in np.arange(4):#(Dims[0])):
             x2.mask=X_t.mask.copy
             x2.data[X_t.data>=0.15]=1
             if all(X_t.mask== True):
+                rawSIP[lt,i,j].mask=True
+                calFcst[lt,i,j].mask=True
                 continue
             if all(np.isnan(Y)):
+                rawSIP[lt,i,j].mask=True
+                calFcst[lt,i,j].mask=True
                 continue
 
             taqminst = taqm()
