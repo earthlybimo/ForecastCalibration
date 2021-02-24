@@ -120,7 +120,7 @@ print("Input done, now calibrating")
 
 ## Grid loops should be here:
 i=1;j=1;lt=1
-for lt in np.arange((Dims[0])):
+for lt in np.arange(2):#(Dims[0])):
     print("Leadtime: "+str(lt))
     for i in np.arange((Dims[2])):
         for j in np.arange((Dims[3])):
