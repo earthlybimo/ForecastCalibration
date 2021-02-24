@@ -54,8 +54,8 @@ rawFcst[:,0:Dims[1],:,:]=ci_pert.copy()
 rawFcst[:,Dims[1],:,:]=ci_cont.copy()
 
 calFcst=np.ma.empty((Dims[0],Dims[2],Dims[3]))
-rawSIP=calFcst.copy()
-obsSIP=calFcst.copy()
+rawSIP=calFcst.ma.copy()
+obsSIP=calFcst.ma.copy()
 
 filename = save_path+'TAQM_calibrated_'+os.path.basename(file2)
 if (os.path.isfile(filename)):
