@@ -128,15 +128,16 @@ for lt in np.arange((Dims[0])):
             X=histFcst[:,lt,:,i,j]
             Y=histObs[:,lt,i,j]
             X_t=rawFcst[lt,:,i,j]
+            if all(np.isnan(Y)):
+                continue
             taqminst = taqm()
             tau_t=histYrs
             t=targetyear
             x2=np.zeros(X_t.size)
-            x2[X_t>0]=1
+            x2[X_t>=0.15]=1
             rawSIP[lt,i,j]=np.nanmean(x2)
 
-            if all(np.isnan(Y)):
-                continue
+
 
             pval_x = linregress(tau_t,X.mean(axis=1))[3]  #check the p-value for MH trend over tau_t
             if pval_x<0.05:
