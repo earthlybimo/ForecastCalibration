@@ -121,7 +121,7 @@ print("Input done, now calibrating")
 
 ## Grid loops should be here:
 i=1;j=1;lt=1
-for lt in np.arange((Dims[0])):
+for lt in np.arange(4):#(Dims[0])):
     print("Leadtime: "+str(lt))
     for i in np.arange((Dims[2])):
         for j in np.arange((Dims[3])):
@@ -130,8 +130,9 @@ for lt in np.arange((Dims[0])):
             Y=histObs[:,lt,i,j]
             X_t=rawFcst[lt,:,i,j]
             x2=np.ma.empty_like(X_t)
-            x2[X_t>=0.15]=1
-            if all(np.isnan(x2)):
+            x2.mask=X_t.mask.copy
+            x2.data[X_t.data>=0.15]=1
+            if all(X_t.mask== True):
                 continue
             if all(np.isnan(Y)):
                 continue
