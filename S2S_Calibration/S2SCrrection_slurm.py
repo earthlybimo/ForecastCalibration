@@ -49,22 +49,22 @@ concNC=Dataset(file2)
 ci_pert=concNC.variables['ci'][:]
 concNC.close()
 Dims=ci_pert.shape
-rawFcst=np.ma.empty((Dims[0],(Dims[1]+1),Dims[2],Dims[3]))  #  Leadtime, EMno, i, j
+rawFcst=np.empty((Dims[0],(Dims[1]+1),Dims[2],Dims[3]))  #  Leadtime, EMno, i, j
 rawFcst[:,0:Dims[1],:,:]=ci_pert.copy()
 rawFcst[:,Dims[1],:,:]=ci_cont.copy()
 
-calFcst=np.ma.empty((Dims[0],Dims[2],Dims[3]))
-rawSIP=np.ma.empty((Dims[0],Dims[2],Dims[3]))
-#obsSIP=np.ma.empty((Dims[0],Dims[2],Dims[3]))
+calFcst=np.empty((Dims[0],Dims[2],Dims[3]))
+rawSIP=calFcst.copy()
+obsSIP=calFcst.copy()
 
 filename = save_path+'TAQM_calibrated_'+os.path.basename(file2)
 if (os.path.isfile(filename)):
     sys.exit((" File: "+ filename+ " already exists!"))
 
 #
-histFcst=np.ma.empty((len(histYrs),Dims[0],(Dims[1]),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
+histFcst=np.empty((len(histYrs),Dims[0],(Dims[1]),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
 ## Or If we wish to include the control runs as well
-histFcst=np.ma.empty((len(histYrs),Dims[0],(Dims[1]+1),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
+histFcst=np.empty((len(histYrs),Dims[0],(Dims[1]+1),Dims[2],Dims[3]))  # Fcstyear, Leadtime, EMno, i, j
 
 for c,year in  enumerate(histYrs):
     file3=file2.replace(str(targetyear), str(year))
@@ -80,14 +80,13 @@ for c,year in  enumerate(histYrs):
     concNC=Dataset(file4)
     ci_cont=concNC.variables['ci'][:]
     concNC.close()
-    histFcst[c,:,0:Dims[1],:,:]=ci_pert
-    histFcst[c,:,Dims[1],:,:]=ci_cont;
+    histFcst[c,:,0:Dims[1],:,:]=ci_pert;histFcst[c,:,Dims[1],:,:]=ci_cont;
 
 
 temp=file1.find(".nc")
 datetemp=(file1[(temp-2):temp])
 initdate=date(targetyear,initMonth,int(datetemp))
-targetObs=np.ma.empty((Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
+targetObs=np.empty((Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
 for f in np.arange((Dims[0])): #Along time, starting from initial day to final day
     trgtdate=initdate+timedelta(int(f))
     satfile=(sat_folder+"/ice_conc_"+HEM+"_ease-125_reproc_"+trgtdate.strftime("%Y%m%d")+"1200.nc4")
@@ -104,7 +103,7 @@ targetObs[targetObs<0]=np.nan
 histObs=np.empty((len(histYrs),Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
 for c,year in  enumerate(histYrs):
     initdate=date(year,initMonth,int(datetemp))
-    for f in np.arange((Dims[0]-1)): #Along time, starting from initial day to final day
+    for f in np.arange((Dims[0])): #Along time, starting from initial day to final day
         trgtdate=initdate+timedelta(int(f))
         satfile=(sat_folder+"/ice_conc_"+HEM+"_ease-125_reproc_"+trgtdate.strftime("%Y%m%d")+"1200.nc4")
         if not(os.path.isfile(satfile)):
@@ -121,7 +120,7 @@ print("Input done, now calibrating")
 
 ## Grid loops should be here:
 i=1;j=1;lt=1
-for lt in np.arange(2):#(Dims[0])):
+for lt in np.arange((Dims[0])):
     print("Leadtime: "+str(lt))
     for i in np.arange((Dims[2])):
         for j in np.arange((Dims[3])):
@@ -129,30 +128,24 @@ for lt in np.arange(2):#(Dims[0])):
             X=histFcst[:,lt,:,i,j]
             Y=histObs[:,lt,i,j]
             X_t=rawFcst[lt,:,i,j]
-            x2=np.ma.empty_like(X_t)
-            x2.mask=X_t.mask.copy
-            x2.data[X_t.data>=0.15]=1
-            if all(X_t.mask== True):
-                rawSIP[lt,i,j]=np.nan
-                calFcst[lt,i,j]=np.nan 
-                continue
-            if all(np.isnan(Y)):
-                rawSIP[lt,i,j]=np.nan
-                calFcst[lt,i,j]=np.nan
-                continue
-
             taqminst = taqm()
             tau_t=histYrs
             t=targetyear
-            rawSIP[lt,i,j]=np.ma.mean(x2)
+            x2=np.zeros(X_t.size)
+            x2[X_t>0]=1
+            rawSIP[lt,i,j]=np.nanmean(x2)
+
+            if all(np.isnan(Y)):
+                continue
+
             pval_x = linregress(tau_t,X.mean(axis=1))[3]  #check the p-value for MH trend over tau_t
             if pval_x<0.05:
                 # if significant, then adjust MH for the trend to create TAMH
                 X_ta = taqminst.trend_adjust_1p(X,tau_t,t)
-                X_ta=X_ta.compressed()
             else:
                 # else, set TAMH equal to MH (i.e. don't perform the trend adjustment)
                 X_ta = np.copy(X)
+
 
             pval_y = linregress(tau_t,Y)[3]     #check p-value for OH trend over tau_t
             if pval_y<0.05:
@@ -161,7 +154,7 @@ for lt in np.arange(2):#(Dims[0])):
             else:
                 # else, set TAOH equal to OH (i.e. don't perform the trend adjustment)
                 Y_ta = np.copy(Y)
-            #
+
             X_ta_params, Y_ta_params, X_t_params = taqminst.fit_params(X_ta,Y_ta,X_t)
 
             # Now calibrate the forecast ensemble using the calibrate() method:
