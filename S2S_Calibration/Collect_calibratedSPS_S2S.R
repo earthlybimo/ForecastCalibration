@@ -85,7 +85,7 @@ Fctr=((6371^2)/1000000)
 
 
 
-save(file = save_name,version = 2, calSPSarr,rawSPSarr,ylist,calMean,rawMean,Fctr,flen)
+save(file = save_name,version = 2, calSPSarr,rawSPSarr,ylist,calMean,rawMean,Fctr)
 print(paste0("File saved:",save_name))
 
 

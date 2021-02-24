@@ -104,7 +104,7 @@ targetObs[targetObs<0]=np.nan
 histObs=np.empty((len(histYrs),Dims[0],Dims[2],Dims[3]))  # Fcstyear, Leadtime
 for c,year in  enumerate(histYrs):
     initdate=date(year,initMonth,int(datetemp))
-    for f in np.arange((Dims[0])): #Along time, starting from initial day to final day
+    for f in np.arange((Dims[0]-1)): #Along time, starting from initial day to final day
         trgtdate=initdate+timedelta(int(f))
         satfile=(sat_folder+"/ice_conc_"+HEM+"_ease-125_reproc_"+trgtdate.strftime("%Y%m%d")+"1200.nc4")
         if not(os.path.isfile(satfile)):
