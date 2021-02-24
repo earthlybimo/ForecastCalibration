@@ -128,7 +128,7 @@ for lt in np.arange(2):#(Dims[0])):
             X=histFcst[:,lt,:,i,j]
             Y=histObs[:,lt,i,j]
             X_t=rawFcst[lt,:,i,j]
-            if (all(np.isnan(Y))) or (all(rawFcst<0)) or (all(rawFcst==np.nan)):
+            if (all(np.isnan(Y))) or (all(X_t<0)) or (all(np.isnan(X_t))):
                 rawSIP[lt,i,j]=np.nan
                 calFcst[lt,i,j]=np.nan
                 continue
