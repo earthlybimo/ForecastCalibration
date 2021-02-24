@@ -133,12 +133,12 @@ for lt in np.arange(2):#(Dims[0])):
             x2.mask=X_t.mask.copy
             x2.data[X_t.data>=0.15]=1
             if all(X_t.mask== True):
-                rawSIP[lt,i,j].mask=True
-                calFcst[lt,i,j].mask=True
+                rawSIP.mask[lt,i,j]=True
+                calFcst.mask[lt,i,j]=True
                 continue
             if all(np.isnan(Y)):
-                rawSIP[lt,i,j].mask=True
-                calFcst[lt,i,j].mask=True
+                rawSIP.mask[lt,i,j]=True
+                calFcst.mask[lt,i,j]=True
                 continue
 
             taqminst = taqm()
