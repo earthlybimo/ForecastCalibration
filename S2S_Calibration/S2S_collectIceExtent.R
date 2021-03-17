@@ -64,7 +64,7 @@ for (yc in 1:length(Ylist)){
       #Check file exists? If not skip?
       if(length(pert_forc)==0) next()
       start_timestep=as.Date(start_date)
-      dateArr[yc,dd]=start_date
+      dateArr[yc,mm]=start_date
       if (((modelname == "MFRANCE") & (HEM=="nh")) | (modelname == "NCEP")) start_timestep= start_timestep+1
       # end_timestep=start_timestep+flength-1
       ## Because NCEP and MFrance (but only in NH) start from day +1, so we use start_timestep as the real timestep of comparison 
