@@ -55,9 +55,9 @@ for (yc in 1:length(Ylist)){
   yy=Ylist[yc];print(paste0('Saving for year: ',yy))
   for(mm in 1:12){
     donecount=0
-    for(ddd in 1:8){
+    for(dd in 1:8){
       if(donecount>0) next() #If already did a file for this month, skip rest.
-      start_date=format.Date(sprintf("%d-%02d-%02d",yy,mm,ddd)) #Cycling through start date
+      start_date=format.Date(sprintf("%d-%02d-%02d",yy,mm,dd)) #Cycling through start date
       
       pert_forc=Sys.glob(paste0(Modelpath,"/",modelname,"_ref_pert_sic_",start_date,".nc"))
       cont_forc=Sys.glob(paste0(Modelpath,"/",modelname,"_ref_cont_sic_",start_date,".nc"))
