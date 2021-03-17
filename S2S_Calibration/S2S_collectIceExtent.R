@@ -30,7 +30,7 @@ if(HEM=="sh"){
   datasource="/mnt/lustre01/work/ab0995/a270099/S2S_south/"  #In Lorenzos' side
   newmaskfile="/mnt/lustre01/work/ab0995/a270138/S2S_Output_south/Newmask"
 }
-outputdir=" /work/ba1138/a270138/BiasCorrOutput/S2S_Results"
+outputdir="/work/ba1138/a270138/BiasCorrOutput/S2S_Results"
 
 # maskfile=paste0(datasource,"mask_weight/mask.nc")
 # OGmask=getncvar(maskfile,'ci') # This is the mask that lorenzo used, in case we want to use that one
