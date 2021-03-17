@@ -100,7 +100,7 @@ for (yc in 1:length(Ylist)){
       Area1=apply(sat_sip, 3,function(x) sum(x*cellarea,na.rm = T))
       satArea_big[yc,mm,]=(Area1) 
       
-      Area1=apply(ci2, 3,function(x) sum(x*cellarea*mask,na.rm = T))
+      Area1=apply(sat_sip, 3,function(x) sum(x*cellarea*mask,na.rm = T))
       satArea_small[yc,mm,]=(Area1) 
       
       remove(sat_sip,ci_c,ci_p,ci2,ci,pert_forc,cont_forc,Area1)
