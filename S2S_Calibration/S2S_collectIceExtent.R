@@ -111,4 +111,5 @@ for (yc in 1:length(Ylist)){
 
 savename=paste0(outputdir,"/IceExtent_",modelname,"_",HEM)
 save(file = savename,version = 2,cellarea,mask,satArea_small,satArea_big,modelArea_small,modelArea_big,flen,dm,Ylist,dateArr)
+file.copy(savename,to = paste0("~/Data/tomove/",basename(savename)))
 print(paste0("File ",basename(savename) ," saved"))
