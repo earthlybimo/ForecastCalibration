@@ -49,7 +49,7 @@ for(yy in 1:length(inYR)){
       obsSIP[obsVar2>=0.15]=1
       obsSIP[obsVar2<0.15]=0
       
-      loadname=sprintf("%s/Forecast_Calibration_BigHist_Yr%d_%02dMn_%02d.nc",save_path,inYR[yy],init,mm)
+      loadname=sprintf("%s/Forecast_Calibration_TrustSharpFalse_Yr%d_%02dMn_%02d.nc",save_path,inYR[yy],init,mm)
       if(!file.exists(loadname)) next()
       
       fl=nc_open(loadname)
@@ -101,6 +101,6 @@ Mon_calIIEE=apply(calIIEEarr, c(2,3),mean,na.rm=T)
 # calMEarr=calIIEEarr-calAEEarr
 
 save(file = Allsavename,version = 2,grd,calIIEEarr,rawIIEEarr,inYR,Mon_rawIIEE,Mon_calIIEE,rawOarr,calOarr)
-file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)))
+file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)),overwrite = T)
 print("Done!")
 

@@ -45,6 +45,6 @@ Mon_rawSPS=apply(rawSPSarr, c(2,3),mean,na.rm=T)
 Mon_calSPS=apply(calSPSarr, c(2,3),mean,na.rm=T)
 
 save(file = Allsavename,version = 2,grd,calSPSarr,rawSPSarr,inYR,Mon_rawSPS,Mon_calSPS)
-file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)))
+file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)),overwrite = T)
 print("Done!")
 
