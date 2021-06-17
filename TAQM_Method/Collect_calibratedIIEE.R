@@ -74,24 +74,24 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       nc_close(fl)
       
       rawSIPmed=binarise(rawSIP,0.5)
-      uid=which((rawSIP==0)&(obsSIP==1)&(Hemfilter==1)) #identify underforecast grids
+      uid=which((rawSIPmed==0)&(obsSIP==1)&(Hemfilter==1)) #identify underforecast grids
       U=sum(grd$cell_area[uid],na.rm=T)  #And sum area
-      oid=which((rawSIP==1)&(obsSIP==0)&(Hemfilter==1)) #identify overforecast grids
+      oid=which((rawSIPmed==1)&(obsSIP==0)&(Hemfilter==1)) #identify overforecast grids
       O=sum(grd$cell_area[uid],na.rm=T)  #And sum area
       rawUarr[yy,init,mm]=U*(10^-12)
       rawOarr[yy,init,mm]=O*(10^-12)
       
-      remove(O,U,uid,oid,rawSIPmed)
+      remove(O,U,uid,oid,rawSIPmed,rawSIP)
       
       calSIPmed=binarise(calSIP,0.5)
-      uid=which((calSIP==0)&(obsSIP==1)&(Hemfilter==1)) #identify underforecast grids
+      uid=which((calSIPmed==0)&(obsSIP==1)&(Hemfilter==1)) #identify underforecast grids
       U=sum(grd$cell_area[uid],na.rm=T)  #And sum area
-      oid=which((calSIP==1)&(obsSIP==0)&(Hemfilter==1)) #identify overforecast grids
+      oid=which((calSIPmed==1)&(obsSIP==0)&(Hemfilter==1)) #identify overforecast grids
       O=sum(grd$cell_area[uid],na.rm=T)  #And sum area
       calUarr[yy,init,mm]=U*(10^-12)
       calOarr[yy,init,mm]=O*(10^-12)
       
-      remove(O,U,uid,oid,calSIPmed)
+      remove(O,U,uid,oid,calSIPmed,calSIP)
       
     }
   }
