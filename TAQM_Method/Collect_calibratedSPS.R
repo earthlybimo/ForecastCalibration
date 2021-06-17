@@ -1,12 +1,27 @@
 ### Script to open calibrated SSIPS forecast, compute SPS, then save it into a table.
+args = commandArgs(trailingOnly=TRUE)
+ccc=as.integer(args[1]) #Choice of Hemisphere
 
 library(ncdf4);library(spheRlab)
 
 save_path = '/work/ba1138/a270138/BiasCorrOutput/TAQMResults'
-Allsavename=paste0(save_path,"/CollectedSPSResult_TrustSharpFalse")
+
 
 ##First we need the gridinfo to compute SPS
 grd = sl.grid.readNCDF("/mnt/lustre02/work/ab0995/a270112/data_fesom2/griddes.nc")
+Hemfilter=array(0,dim=length(grd$lat))
+
+if(ccc == 1)  {
+  HEM="nh"
+  Hemfilter[grd$lat>0]=1
+}
+if(ccc == 2)  {
+  HEM="sh"
+  Hemfilter[grd$lat<0]=1
+}
+Allsavename=paste0(save_path,"/CollectedSPSResult_TrustSharpFalseJune17_",HEM)
+
+
 
 inYR=2011:2018  #which year
 # inMON=1:4   #And which initialisation 
@@ -27,12 +42,12 @@ for(yy in 1:length(inYR)){
       
       preSPS=(rawSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
-      SPSraw=sum(preSPS2)*(10^-12)
+      SPSraw=sum(preSPS2[Hemfilter])*(10^-12)
       rawSPSarr[yy,init,mm]=SPSraw
       remove(preSPS2,preSPS)
       preSPS=(calSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
-      SPScal=sum(preSPS2)*(10^-12)
+      SPScal=sum(preSPS2[Hemfilter])*(10^-12)
       calSPSarr[yy,init,mm]=SPScal
       
       remove(rawSIP,calSIP,obsSIP,SPSraw,SPScal)
@@ -46,5 +61,5 @@ Mon_calSPS=apply(calSPSarr, c(2,3),mean,na.rm=T)
 
 save(file = Allsavename,version = 2,grd,calSPSarr,rawSPSarr,inYR,Mon_rawSPS,Mon_calSPS)
 file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)),overwrite = T)
-print("Done!")
+print(paste0("Done! saved file:",basename(Allsavename)))
 
