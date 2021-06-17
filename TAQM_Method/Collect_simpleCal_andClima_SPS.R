@@ -96,18 +96,11 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
   }
 }
 
-climaIIEEarr=climaOarr+climaUarr
-calIIEEarr=calOarr+calUarr
-Mon_climaIIEE=apply(climaIIEEarr, c(2,3),mean,na.rm=T)
-Mon_calIIEE=apply(calIIEEarr, c(2,3),mean,na.rm=T)
+Mon_climaSPS=apply(climaSPSarr, c(2,3),mean,na.rm=T)
+Mon_calSPS=apply(calSPSarr, c(2,3),mean,na.rm=T)
 
-
-# climaAEEarr=abs(climaOarr- climaUarr )
-# climaMEarr=climaIIEEarr-climaAEEarr
-# calAEEarr=abs(calOarr-calUarr)
-# calMEarr=calIIEEarr-calAEEarr
 SpecialNote="Not sure if what we took as climatological SIP is actually climatological SIC!"
-save(file = Allsavename,version = 2,grd,calIIEEarr,climaIIEEarr,inYR,Mon_climaIIEE,Mon_calIIEE,climaOarr,calOarr,SpecialNote)
+save(file = Allsavename,version = 2,grd,calSPSarr,climaSPSarr,inYR,Mon_climaSPS,Mon_calSPS,SpecialNote)
 file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)),overwrite = T)
 print(paste0("Done! saved file:",basename(Allsavename)))
 
