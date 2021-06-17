@@ -77,7 +77,7 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       fl=nc_open(ClimFile)
       climaSIC=ncvar_get(fl,"obs")
       nc_close(fl)
-      climaSIPmed=binarise(climaSIC,0.15)
+      climaSIPmed=binarise(climaSIC[,obsTmnth],0.15)
       
       uid=which((climaSIPmed==0)&(obsSIP==1)&(Hemfilter==1)) #identify underforecast grids
       U=sum(grd$cell_area[uid],na.rm=T)  #And sum area
