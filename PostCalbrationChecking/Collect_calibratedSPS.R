@@ -24,7 +24,7 @@ Allsavename=paste0(save_path,"/CollectedSPSResult_TrustSharpFalseJune17_",HEM)
 
 
 inYR=2011:2018  #which year
-# inMON=1:4   #And which initialisation 
+strtm = c(1, 4, 7, 10)  # which is the starting month for each initialisation
 rawSPSarr=array(dim=c(length(inYR),4,12))
 calSPSarr=rawSPSarr
 
