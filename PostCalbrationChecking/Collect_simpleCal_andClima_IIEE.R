@@ -87,7 +87,7 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
         ClimaSIParr[l,]=obsSIPtemp
       }
       climaSIP=colMeans(ClimaSIParr,na.rm = T)
-      climaSIPmed=binarise(climaSIP[,obsTmnth],0.5)
+      climaSIPmed=binarise(climaSIP,0.5)
       # ClimFile=paste0(Clima_path,"/OSISAF_MON_CLIM_",(obsTyr-9),"-",(obsTyr-1),".nc")
       # if(!file.exists(ClimFile)) {print(paste0("This Climafile doesnt exist! ",basename(ClimFile))); next()}
       # fl=nc_open(ClimFile)
