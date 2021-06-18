@@ -105,6 +105,7 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       remove(O,U,uid,oid,climaSIPmed,climaSIC)
       
       LcalSIP=LcalSIP_all[,mm,init]
+      # This assumes the simple forecasts are stored as SIP in  grid x mm x initialisation for each year
       LcalSIPmed=binarise(LcalSIP,0.5)
       uid=which((LcalSIPmed==0)&(obsSIP==1)&(Hemfilter==1)) #identify underforecast grids
       U=sum(grd$cell_area[uid],na.rm=T)  #And sum area

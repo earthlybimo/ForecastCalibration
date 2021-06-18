@@ -45,6 +45,7 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
   # if(!file.exists(loadname)) next()
   fl=nc_open(loadname)
   calSIP_all=ncvar_get(fl,"SIP_FCST_CORR")
+  # This assumes the simple forecasts are stored as SIP in  grid x mm x initialisation for each year
   nc_close(fl)
   
   for(init in 1:4){
