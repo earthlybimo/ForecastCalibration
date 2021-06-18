@@ -70,17 +70,32 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       obsSIP[(obsVar2>=0)&(obsVar2<0.15)]=0
       
       ## Climatology:
-      ClimFile=paste0(Clima_path,"/OSISAF_MON_CLIM_",(obsTyr-9),"-",(obsTyr-1),".nc")
-      if(!file.exists(ClimFile)) {print(paste0("This Climafile doesnt exist! ",basename(ClimFile))); next()}
-      fl=nc_open(ClimFile)
-      climaSIC=ncvar_get(fl,"obs")
-      nc_close(fl)
-      climaSIP=binarise(climaSIC[,obsTmnth],0.15)  #This is not clear whether it is climatological SIC, or SIP..
+      # Let's make our own climatlogy:
+      ClimaSIParr=array(dim =c(9,length(grd$lat)))
+      for(l in 9:1){
+        loadname=paste0("/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_",(obsTyr-l),".nc")
+        if(!file.exists(loadname)) {print(paste0("Not found: ",basename(loadname)));next()}
+        fl=nc_open(loadname)
+        obsVar1=ncvar_get(fl,"obs") # num [1:126858, 1:12]
+        nc_close(fl)
+        obsVar2=obsVar1[,obsTmnth]
+        obsSIPtemp=array(dim =length(grd$lat))
+        obsSIPtemp[(obsVar2>=0.15)&(obsVar2<=1)]=1
+        obsSIPtemp[(obsVar2>=0)&(obsVar2<0.15)]=0
+        ClimaSIParr[l,]=obsSIPtemp
+      }
+      climaSIP=colMeans(ClimaSIParr,na.rm = T)
+      # ClimFile=paste0(Clima_path,"/OSISAF_MON_CLIM_",(obsTyr-9),"-",(obsTyr-1),".nc")
+      # if(!file.exists(ClimFile)) {print(paste0("This Climafile doesnt exist! ",basename(ClimFile))); next()}
+      # fl=nc_open(ClimFile)
+      # climaSIC=ncvar_get(fl,"obs")
+      # nc_close(fl)
+      # climaSIP=binarise(climaSIC[,obsTmnth],0.15)  #This is not clear whether it is climatological SIC, or SIP..
       
       
       preSPS=(climaSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
-      SPSclima=sum(preSPS2[Hemfilter],na.rm = T)*(10^-12)
+      SPSclima=sum(preSPS2[Hemfilter==1],na.rm = T)*(10^-12)
       climaSPSarr[yy,init,mm]=SPSclima
       remove(preSPS2,preSPS)
       
