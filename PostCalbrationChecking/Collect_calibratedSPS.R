@@ -62,12 +62,12 @@ for(yy in 1:length(inYR)){
       
       preSPS=(rawSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
-      SPSraw=sum(preSPS2[Hemfilter])*(10^-12)
+      SPSraw=sum(preSPS2[Hemfilter==1],na.rm = T)*(10^-12)
       rawSPSarr[yy,init,mm]=SPSraw
       remove(preSPS2,preSPS)
       preSPS=(calSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
-      SPScal=sum(preSPS2[Hemfilter])*(10^-12)
+      SPScal=sum(preSPS2[Hemfilter==1],na.rm = T)*(10^-12)
       calSPSarr[yy,init,mm]=SPScal
       
       remove(rawSIP,calSIP,obsSIP,SPSraw,SPScal)

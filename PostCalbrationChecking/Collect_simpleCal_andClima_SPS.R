@@ -38,7 +38,7 @@ inYR=2011:2018  #which year
 strtm = c(1, 4, 7, 10)  # which is the starting month for each initialisation
 
 climaSPSarr=array(dim=c(length(inYR),4,12))
-calSPSarr=climaSPSarr
+LcalSPSarr=climaSPSarr
 
 for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
   loadname=sprintf("%s/F%0.2d_ens_mon_mean_SIP_corr.nc",Data_path,(inYR[yy]-2000))
@@ -60,7 +60,7 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       # print(paste0('Targetyear = ',(inYR[yy]),',initialisation = ',(init),' which means from ', (strtm[init]) ,',leadtime ',(mm),' so target month is ',(obsTmnth),' of year ',(obsTyr)))  # Testing
       
       loadname=paste0("/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_",obsTyr,".nc")
-      if(!file.exists(loadname)) next()
+      if(!file.exists(loadname)) {print(paste0("Not found: ",basename(loadname)));next()}
       fl=nc_open(loadname)
       obsVar1=ncvar_get(fl,"obs") # num [1:126858, 1:12]
       nc_close(fl)
@@ -80,15 +80,15 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       
       preSPS=(climaSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
-      SPSclima=sum(preSPS2[Hemfilter])*(10^-12)
+      SPSclima=sum(preSPS2[Hemfilter],na.rm = T)*(10^-12)
       climaSPSarr[yy,init,mm]=SPSclima
       remove(preSPS2,preSPS)
       
       calSIP=calSIP_all[,mm,init]
       preSPS=(calSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
-      SPScal=sum(preSPS2[Hemfilter])*(10^-12)
-      calSPSarr[yy,init,mm]=SPScal
+      SPScal=sum(preSPS2[Hemfilter==1],na.rm = T)*(10^-12)
+      LcalSPSarr[yy,init,mm]=SPScal
       
       
       
@@ -97,10 +97,10 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
 }
 
 Mon_climaSPS=apply(climaSPSarr, c(2,3),mean,na.rm=T)
-Mon_calSPS=apply(calSPSarr, c(2,3),mean,na.rm=T)
+Mon_LcalSPS=apply(LcalSPSarr, c(2,3),mean,na.rm=T)
 
 SpecialNote="Not sure if what we took as climatological SIP is actually climatological SIC!"
-save(file = Allsavename,version = 2,grd,calSPSarr,climaSPSarr,inYR,Mon_climaSPS,Mon_calSPS,SpecialNote)
+save(file = Allsavename,version = 2,grd,LcalSPSarr,climaSPSarr,inYR,Mon_climaSPS,Mon_LcalSPS,SpecialNote)
 file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)),overwrite = T)
 print(paste0("Done! saved file:",basename(Allsavename)))
 
