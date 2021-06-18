@@ -39,14 +39,14 @@ strtm = c(1, 4, 7, 10)  # which is the starting month for each initialisation
 
 climaOarr=array(dim=c(length(inYR),4,12))
 climaUarr=climaOarr
-calOarr=climaOarr
-calUarr=climaUarr
+LcalOarr=climaOarr
+LcalUarr=climaUarr
 
 for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
   loadname=sprintf("%s/F%0.2d_ens_mon_mean_SIP_corr.nc",Data_path,(inYR[yy]-2000))
   # if(!file.exists(loadname)) next()
   fl=nc_open(loadname)
-  calSIP_all=ncvar_get(fl,"SIP_FCST_CORR")
+  LcalSIP_all=ncvar_get(fl,"SIP_FCST_CORR")
   nc_close(fl)
   
   for(init in 1:4){
@@ -69,7 +69,7 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       obsVar2=obsVar1[,obsTmnth]
       obsSIP=array(dim =length(grd$lat))
       obsSIP[(obsVar2>=0.15)&(obsVar2<=1)]=1
-      obsSIP[(obsVar2>=0)&(obsVar2<0.15)]=1
+      obsSIP[(obsVar2>=0)&(obsVar2<0.15)]=0
       
       ## Climatology:
       ClimFile=paste0(Clima_path,"/OSISAF_MON_CLIM_",(obsTyr-9),"-",(obsTyr-1),".nc")
@@ -88,33 +88,33 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       
       remove(O,U,uid,oid,climaSIPmed,climaSIC)
       
-      calSIP=calSIP_all[,mm,init]
-      calSIPmed=binarise(calSIP,0.5)
-      uid=which((calSIPmed==0)&(obsSIP==1)&(Hemfilter==1)) #identify underforecast grids
+      LcalSIP=LcalSIP_all[,mm,init]
+      LcalSIPmed=binarise(LcalSIP,0.5)
+      uid=which((LcalSIPmed==0)&(obsSIP==1)&(Hemfilter==1)) #identify underforecast grids
       U=sum(grd$cell_area[uid],na.rm=T)  #And sum area
-      oid=which((calSIPmed==1)&(obsSIP==0)&(Hemfilter==1)) #identify overforecast grids
+      oid=which((LcalSIPmed==1)&(obsSIP==0)&(Hemfilter==1)) #identify overforecast grids
       O=sum(grd$cell_area[uid],na.rm=T)  #And sum area
-      calUarr[yy,init,mm]=U*(10^-12)
-      calOarr[yy,init,mm]=O*(10^-12)
+      LcalUarr[yy,init,mm]=U*(10^-12)
+      LcalOarr[yy,init,mm]=O*(10^-12)
       
-      remove(O,U,uid,oid,calSIPmed,calSIP)
+      remove(O,U,uid,oid,LcalSIPmed,LcalSIP)
       
     }
   }
 }
 
 climaIIEEarr=climaOarr+climaUarr
-calIIEEarr=calOarr+calUarr
+LcalIIEEarr=LcalOarr+LcalUarr
 Mon_climaIIEE=apply(climaIIEEarr, c(2,3),mean,na.rm=T)
-Mon_calIIEE=apply(calIIEEarr, c(2,3),mean,na.rm=T)
+Mon_LcalIIEE=apply(LcalIIEEarr, c(2,3),mean,na.rm=T)
 
 
 # climaAEEarr=abs(climaOarr- climaUarr )
 # climaMEarr=climaIIEEarr-climaAEEarr
-# calAEEarr=abs(calOarr-calUarr)
-# calMEarr=calIIEEarr-calAEEarr
+# LcalAEEarr=abs(LcalOarr-LcalUarr)
+# LcalMEarr=LcalIIEEarr-LcalAEEarr
 
-save(file = Allsavename,version = 2,grd,calIIEEarr,climaIIEEarr,inYR,Mon_climaIIEE,Mon_calIIEE,climaOarr,calOarr)
+save(file = Allsavename,version = 2,grd,LcalIIEEarr,climaIIEEarr,inYR,Mon_climaIIEE,Mon_LcalIIEE,climaOarr,LcalOarr)
 file.copy(from = Allsavename,to = paste0("~/Data/tomove/",basename(Allsavename)),overwrite = T)
 print(paste0("Done! saved file:",basename(Allsavename)))
 

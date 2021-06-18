@@ -62,7 +62,7 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       obsVar2=obsVar1[,obsTmnth]
       obsSIP=array(dim =length(grd$lat))
       obsSIP[(obsVar2>=0.15)&(obsVar2<=1)]=1
-      obsSIP[(obsVar2>=0)&(obsVar2<0.15)]=1
+      obsSIP[(obsVar2>=0)&(obsVar2<0.15)]=0
       
       loadname=sprintf("%s/Forecast_Calibration_TrustSharpFalse_Yr%d_%02dMn_%02d.nc",save_path,inYR[yy],init,mm)
       if(!file.exists(loadname)) next()

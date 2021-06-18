@@ -37,8 +37,28 @@ for(yy in 1:length(inYR)){
       fl=nc_open(loadname)
       rawSIP=ncvar_get(fl,"SIP_FCST_RAW")
       calSIP=ncvar_get(fl,"SIP_FCST_CORR")
-      obsSIP=ncvar_get(fl,"SIP_FCST_OBS")
+      # obsSIP=ncvar_get(fl,"SIP_FCST_OBS")
       nc_close(fl)
+      
+      #Rather than use the 'pre-saved obsSIP', let's compute it. 
+      obsTyr=inYR[yy]
+      obsTmnth = mm+strtm[init]-1
+      if (obsTmnth>12){
+        obsTyr=obsTyr+1
+        obsTmnth=obsTmnth-12}
+      
+      # print(paste0('Targetyear = ',(inYR[yy]),',initialisation = ',(init),' which means from ', (strtm[init]) ,',leadtime ',(mm),' so target month is ',(obsTmnth),' of year ',(obsTyr)))  # Testing
+      
+      loadname=paste0("/work/ab0995/a270112/data_fesom2/sic/OSISAF_monthly_",obsTyr,".nc")
+      if(!file.exists(loadname)) next()
+      fl=nc_open(loadname)
+      obsVar1=ncvar_get(fl,"obs") # num [1:126858, 1:12]
+      nc_close(fl)
+      obsVar2=obsVar1[,obsTmnth]
+      obsSIP=array(dim =length(grd$lat))
+      obsSIP[(obsVar2>=0.15)&(obsVar2<=1)]=1
+      obsSIP[(obsVar2>=0)&(obsVar2<0.15)]=0
+      
       
       preSPS=(rawSIP-obsSIP)^2   #Diff between model and satelite
       preSPS2=preSPS*grd$cell_area
