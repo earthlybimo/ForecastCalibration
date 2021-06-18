@@ -75,7 +75,7 @@ for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
       fl=nc_open(ClimFile)
       climaSIC=ncvar_get(fl,"obs")
       nc_close(fl)
-      climaSIP=climaSIC[,obsTmnth]  #This is not clear whether it is climatological SIC, or SIP..
+      climaSIP=binarise(climaSIC[,obsTmnth],0.15)  #This is not clear whether it is climatological SIC, or SIP..
       
       
       preSPS=(climaSIP-obsSIP)^2   #Diff between model and satelite
