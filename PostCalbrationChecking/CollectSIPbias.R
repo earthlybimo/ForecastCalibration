@@ -43,6 +43,7 @@ RawBiasArr=climaBiasArr
 TAQMcalBiasArr=climaBiasArr
 
 for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
+  print(paste0("Looking at forecasts of year: ",inYR[yy]))
   loadname=sprintf("%s/F%0.2d_ens_mon_mean_SIP_corr.nc",Data_path,(inYR[yy]-2000))
   # if(!file.exists(loadname)) next()
   fl=nc_open(loadname)
