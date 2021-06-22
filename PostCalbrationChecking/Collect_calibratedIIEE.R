@@ -47,7 +47,9 @@ simpOarr=climaOarr
 simpUarr=climaUarr
 
 for(yy in 1:length(inYR)){ # yy=1;init=1;mm=1 #For tests
-  loadname=sprintf("%s/F%0.2d_ens_mon_mean_SIP_corr.nc",Data_path,(inYR[yy]-2000))
+  
+  #Loading the annual SIMP calibrated file
+  loadname=sprintf("%s/F%0.2d_ens_mon_mean_SIP_corr.nc",SIMPdata_path,(inYR[yy]-2000))
   # if(!file.exists(loadname)) next()
   fl=nc_open(loadname)
   simpSIP_all=ncvar_get(fl,"SIP_FCST_CORR")

@@ -33,6 +33,7 @@ simpSPSarr=climaSPSarr
 
 for(yy in 1:length(inYR)){
   
+  #Loading the annual SIMP calibrated file
   loadname=sprintf("%s/F%0.2d_ens_mon_mean_SIP_corr.nc",SIMPdata_path,(inYR[yy]-2000))
   # if(!file.exists(loadname)) next()
   fl=nc_open(loadname)
