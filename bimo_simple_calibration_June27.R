@@ -2,7 +2,7 @@
 
 args = commandArgs(trailingOnly=TRUE)
 targetyear=as.integer(args[1]) # Target year from 2011 to 2018
-init=1
+init=as.integer(args[2]) # Which initialisation? 1 to 4
 
 library(ncdf4);library(spheRlab)
 
