@@ -4,7 +4,7 @@ args = commandArgs(trailingOnly=TRUE)
 yc=as.integer(args[1]) # Target year from 2011 to 2018
 Ylistt=2011:2018
 targetyear=Ylistt[yc]
-  
+
 init=as.integer(args[2]) # Which initialisation? 1 to 4
 
 library(ncdf4);library(spheRlab)
@@ -118,8 +118,8 @@ IIEErawSH=array(dim=c(12))
 
 ## Get target obs  and IIEE, SPS at the same time:
 targetObs=array(dim=c(grlen,12))
-obsTyr=targetyear
 for(mm in 1:12){
+  obsTyr=targetyear
   obsTmnth = mm+strtm[init]-1
   if (obsTmnth>12){
     obsTyr=obsTyr+1
