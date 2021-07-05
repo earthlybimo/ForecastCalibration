@@ -43,11 +43,11 @@ for( y1 in 1:length(histYrs)){
   
   ## Get historical obs fr this period:
   histObs=array(dim=c(grlen,12))
-  obsTyr=whichyear
   for(mm in 1:12){
+    obsTyr=whichyear
     obsTmnth = mm+strtm[init]-1
     if (obsTmnth>12){
-      obsTyr=obsTyr+1
+      obsTyr=whichyear+1
       obsTmnth=obsTmnth-12}
     # print(paste0('Targetyear = ',(inYR[yy]),',initialisation = ',(init),' which means from ', (strtm[init]) ,',leadtime ',(mm),' so target month is ',(obsTmnth),' of year ',(obsTyr)))  # Testing
     
@@ -122,7 +122,7 @@ for(mm in 1:12){
   obsTyr=targetyear
   obsTmnth = mm+strtm[init]-1
   if (obsTmnth>12){
-    obsTyr=obsTyr+1
+    obsTyr=targetyear+1
     obsTmnth=obsTmnth-12}
   # print(paste0('Targetyear = ',(inYR[yy]),',initialisation = ',(init),' which means from ', (strtm[init]) ,',leadtime ',(mm),' so target month is ',(obsTmnth),' of year ',(obsTyr)))  # Testing
   
